@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmogonía Muisca</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+    <!-- Cursor Light Trails -->
+    <canvas id="cursorTrails"></canvas>
+    
+    <!-- Top Controls -->
+    <div class="top-controls">
+        <button id="menuBtn" class="control-btn" aria-label="Menú información">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+        </button>
+        <button id="musicToggle" class="control-btn" aria-label="Apagar música">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18V5l12-2v13"/>
+                <circle cx="6" cy="18" r="3"/>
+                <circle cx="18" cy="16" r="3"/>
+            </svg>
+        </button>
+        <button id="soundToggle" class="control-btn" aria-label="Apagar efectos de sonido">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Info Popup -->
+    <div id="infoPopup" class="popup hidden">
+        <div class="popup-content">
+            <button class="close-btn" id="closePopup">&times;</button>
+            <h2>Información</h2>
+            <p>Esta experiencia interactiva te guía a través de la cosmogonía muisca, el relato de origen del pueblo muisca de Colombia.</p>
+            <h3>Controles:</h3>
+            <ul>
+                <li>Mueve el cursor para crear senderos de luz</li>
+                <li>Haz scroll para revelar la historia</li>
+                <li>Interactúa con los elementos 3D</li>
+                <li>Alterna entre tema claro y oscuro</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Section 1: Darkness -->
+        <section class="section intro-section">
+            <div class="content-wrapper fade-in">
+                <p class="intro-text">
+                    Hubo un tiempo en el que no existía nada. Ni montañas, ni lagunas, ni soles ni lunas. 
+                    Solo la oscuridad lo ocupaba todo, silencio profundo que parecía eterno.
+                </p>
+                <button class="audio-btn" data-audio="1">
+                    <span>Iniciar audio 1</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Section 2: Chiminigagua -->
+        <section class="section">
+            <div class="content-wrapper fade-in">
+                <p class="narrative-text">
+                    Los muiscas dicen que allí, que en medio de ese vacío, permanecía aquel guardián del universo.
+                </p>
+                <p class="narrative-text">
+                    No tenía forma humana ni animal, era más bien una fuerza contenida, un resplandor que dormía en el frío del espacio exterior.
+                </p>
+                
+                <!-- Interactive 3D Orb -->
+                <div class="orb-container">
+                    <div id="interactiveOrb" class="orb-3d">
+                        <div class="orb-inner"></div>
+                        <div class="orb-glow"></div>
+                    </div>
+                    <p class="orb-hint">Interactúa con el orbe</p>
+                    <h2 id="orbName" class="orb-name hidden">Chiminigagua<br><span class="subtitle">La luz de la luz</span></h2>
+                </div>
+
+                <!-- Frozen Earth Image -->
+                <div class="earth-container fade-in-scroll">
+                    <div class="earth-image-wrapper">
+                        <img src="/placeholder.svg?height=400&width=400" alt="Tierra congelada" class="earth-img">
+                        <button class="info-btn" id="earthInfoBtn">?</button>
+                        <div class="earth-info hidden" id="earthInfo">
+                            <p class="info-text">
+                                Las crónicas coloniales como la de fray Pedro Simón en el siglo XVI, narran que Chiminigagua 
+                                liberó dos grandes aves negras que exhalaban luz por sus picos, iluminando el cosmos. 
+                                Ninguno de los cronistas españoles especificó a qué especie pertenecían estas aves; 
+                                simplemente eran descritas como inmensas y oscuras.
+                            </p>
+                            <p class="info-text">
+                                Sin embargo, algunos investigadores modernos han propuesto que podrían haber sido cóndores, 
+                                las aves más grandes del mundo, cuya presencia en los Andes y fuerte simbolismo como 
+                                mensajeros entre cielo y tierra.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: The Birds -->
+        <section class="section">
+            <div class="content-wrapper fade-in-scroll">
+                <p class="narrative-text">
+                    De pronto, el silencio se quebró. Chiminigagua extendió sus brazos y de su interior brotaron 
+                    dos grandes aves negras. Sus alas se desplegaron en el vacío y, con cada aleteo, lanzaron por 
+                    sus picos soplos de claridad.
+                </p>
+                <div class="birds-visual">
+                    <img src="/placeholder.svg?height=300&width=600" alt="Aves negras" class="birds-img">
+                </div>
+                <p class="narrative-text">
+                    Fue así como la oscuridad empezó a agrietarse, dejando escapar destellos dorados. Las aves 
+                    volaban sin descanso, pintando con luz cada rincón del universo. En ese instante nació la aurora, 
+                    y el mundo se iluminó por primera vez.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 4: Sué and Chía -->
+        <section class="section celestial-section">
+            <div class="content-wrapper fade-in-scroll">
+                <p class="narrative-text center">
+                    Con la expansión de la luz llegaron también los ritmos del cosmos. Entre el cielo y la tierra 
+                    emergieron dos presencias que marcarían el tiempo de los hombres.
+                </p>
+                
+                <div class="celestial-beings">
+                    <div class="celestial-card">
+                        <div class="rotating-circle sun-circle" data-rotation="0">
+                            <div class="circle-inner"></div>
+                        </div>
+                        <h3>Sué</h3>
+                        <p>
+                            Del resplandor de Chiminigagua nació Sué, el fuego que despierta la tierra. 
+                            Sus rayos dorados hacen germinar la semilla y guían el trabajo diario. Con su andar 
+                            firme por el cielo, los muiscas aprendieron la claridad del tiempo y la fuerza del día.
+                        </p>
+                    </div>
+                    
+                    <div class="celestial-card">
+                        <div class="rotating-circle moon-circle" data-rotation="0">
+                            <div class="circle-inner"></div>
+                        </div>
+                        <h3>Chía</h3>
+                        <p>
+                            Cuando Sué descansa, surge Chía, la guardiana de la noche. Su brillo plateado envuelve 
+                            lagunas y ríos, marca los ciclos de la siembra y acompaña los sueños. Sus fases recordaban 
+                            que todo vive en transformación y retorno.
+                        </p>
+                    </div>
+                </div>
+                
+                <p class="narrative-text center unity-text">
+                    Sué y Chía no se reemplazan: se necesitan. Juntos marcan el ritmo de la vida, y cuando sus 
+                    caminos se tocan en un eclipse, el cielo revela la unión de lo opuesto.
+                </p>
+            </div>
+        </section>
+
+        <!-- Theme Toggle Section -->
+        <section class="section theme-transition-section">
+            <div class="content-wrapper fade-in-scroll">
+                <div class="theme-toggle-container">
+                    <p class="theme-prompt">A partir de esta sección, tú decides el camino:</p>
+                    <div class="theme-buttons">
+                        <button class="theme-btn" data-theme="light">
+                            <span>Luz</span>
+                            <div class="theme-preview light-preview"></div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark">
+                            <span>Oscuridad</span>
+                            <div class="theme-preview dark-preview"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Bachué -->
+        <section class="section">
+            <div class="content-wrapper fade-in-scroll">
+                <h2 class="section-title">Bachué</h2>
+                <button class="audio-btn" data-audio="2">
+                    <span>Iniciar audio 2</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                </button>
+                
+                <div class="bachue-content">
+                    <img src="/placeholder.svg?height=400&width=600" alt="Bachué emergiendo de la laguna" class="story-img">
+                    
+                    <p class="narrative-text">
+                        Entre sus dones, entregó uno que selló para siempre el destino de los muiscas: el maíz. 
+                        Cuentan que transformó el oro en mazorcas, para que el pueblo supiera que la verdadera riqueza 
+                        no estaba en el metal brillante, sino en el alimento que sostiene la vida. Ese regalo unió lo 
+                        sagrado y lo cotidiano, lo divino y lo humano, y marcó la diferencia entre la abundancia y la escasez.
+                    </p>
+                    
+                    <img src="/placeholder.svg?height=300&width=400" alt="Maíz sagrado" class="corn-img">
+                    
+                    <p class="narrative-text">
+                        Con el paso de los años, cuando ya había cumplido su misión, Bachué regresó a la laguna junto 
+                        al niño que ya era hombre y juntos se transformaron en dos grandes serpientes.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: The Flood and Bochica -->
+        <section class="section">
+            <div class="content-wrapper fade-in-scroll">
+                <p class="narrative-text">
+                    Con el tiempo, el mundo comenzó a perder su armonía. Los hombres y las mujeres olvidaron las 
+                    enseñanzas primeras y se alejaron del equilibrio que unía a la tierra con el cielo. Entonces el 
+                    universo respondió: las aguas crecieron sin límite y cubrieron los campos, los ríos se desbordaron 
+                    y el territorio entero quedó sumergido en un diluvio que parecía no tener fin.
+                </p>
+                
+                <div class="bochica-section">
+                    <h2 class="section-title">Bochica</h2>
+                    <img src="/placeholder.svg?height=400&width=600" alt="Bochica" class="story-img">
+                    
+                    <p class="narrative-text">
+                        En medio de aquel caos, apareció Bochica, el sabio venido del oriente. Con su bastón abrió la 
+                        roca y dejó caer la gran cascada de Tequendama, dando salida a las aguas y devolviendo el orden 
+                        a la tierra. Su gesto no fue un castigo, sino una lección: cuando el mundo se desbalancea, debe 
+                        restablecerse la armonía.
+                    </p>
+                    
+                    <p class="narrative-text">
+                        Después, Bochica compartió con el pueblo sus enseñanzas sobre la agricultura, la justicia y la 
+                        vida en comunidad, recordándoles que el respeto al cosmos es la base de toda existencia.
+                    </p>
+                    
+                    <div class="info-box">
+                        <p class="info-text small">
+                            El mito de Bochica y el diluvio tiene paralelos evidentes con el relato bíblico de Noé, 
+                            algo que los cronistas españoles del siglo XVII aprovecharon para interpretarlo desde su 
+                            marco cristiano. Según Lucas Fernández de Piedrahita en su Historia General del Nuevo Reino 
+                            de Granada (1688), el diluvio fue visto como consecuencia de las "malas costumbres" de los 
+                            hombres, lo que recuerda la lógica del castigo divino en la Biblia. Sin embargo, en la 
+                            cosmogonía muisca, Bochica no solo salva al pueblo al abrir con su bastón la cascada del 
+                            Tequendama, sino que también enseña leyes, agricultura y equilibrio, mostrando un papel de 
+                            maestro civilizador más que de juez moral.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Conclusion -->
+        <section class="section conclusion-section">
+            <div class="content-wrapper fade-in-scroll">
+                <p class="narrative-text center conclusion-text">
+                    Así concluye el gran relato de origen. Los muiscas reconocen que el universo no es una línea recta, 
+                    sino un ciclo. Todo retorna, como Bachué regresó al agua, como Sué y Chía vuelven a encontrarse cada 
+                    día en el horizonte, como el arcoíris que aparece tras la lluvia para recordar la unión entre cielo 
+                    y tierra. La cosmogonía no es solo un mito: es una forma de ver el mundo, un mapa espiritual que guía 
+                    la vida y que, contado hoy, sigue brillando como aquella primera luz que rompió la oscuridad.
+                </p>
+                
+                <img src="/placeholder.svg?height=300&width=800" alt="Arcoíris" class="conclusion-img">
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p class="footer-text">
+                    Esta página web ha sido creada a partir de la investigación sobre la cosmogonía muisca, consultando 
+                    principalmente fuentes oficiales y crónicas españolas que registraron estos relatos durante la Colonia. 
+                    Sin embargo, la memoria viva de esta tradición no pertenece a los libros, sino a las comunidades 
+                    indígenas actuales, quienes continúan transmitiendo y resignificando su herencia cultural. Hoy esa 
+                    memoria histórica es de las nuevas generaciones de muiscas, y a ellas corresponde custodiarla y 
+                    mantenerla en el tiempo. Nuestro propósito es acercar este conocimiento desde el respeto y la 
+                    admiración, reconociendo que su cultura y su historia siguen vivas en la voz de sus propios pueblos.
+                </p>
+                <p class="copyright">All rights reserved © 2025</p>
+                <p class="contact">Correo electrónico: xdxdxd@gmail.com</p>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
