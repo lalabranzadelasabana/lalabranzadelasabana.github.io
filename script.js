@@ -1,294 +1,376 @@
 // Cursor Light Trails
-const canvas = document.getElementById('cursorTrails');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+const canvas = document.getElementById("cursorTrails")
+const ctx = canvas.getContext("2d")
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
 
-let particles = [];
-let mouseX = 0;
-let mouseY = 0;
+const particles = []
 
 class Particle {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.size = Math.random() * 3 + 1;
-        this.speedX = Math.random() * 2 - 1;
-        this.speedY = Math.random() * 2 - 1;
-        this.life = 100;
-        this.color = getComputedStyle(document.body).getPropertyValue('--accent-gold').trim();
-    }
-    
-    update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        this.life -= 2;
-        if (this.size > 0.2) this.size -= 0.05;
-    }
-    
-    draw() {
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.life / 100;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Glow effect
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = this.color;
-    }
+  constructor(x, y) {
+    this.x = x
+    this.y = y
+    this.size = Math.random() * 3 + 1
+    this.speedX = Math.random() * 2 - 1
+    this.speedY = Math.random() * 2 - 1
+    this.life = 100
+    // Get current theme color
+    const style = getComputedStyle(document.documentElement)
+    this.color = style.getPropertyValue("--accent-primary").trim() || "#d4af37"
+  }
+
+  update() {
+    this.x += this.speedX
+    this.y += this.speedY
+    this.life -= 2
+    if (this.size > 0.2) this.size -= 0.05
+  }
+
+  draw() {
+    ctx.fillStyle = this.color
+    ctx.globalAlpha = this.life / 100
+    ctx.beginPath()
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.shadowBlur = 15
+    ctx.shadowColor = this.color
+  }
 }
 
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    
-    for (let i = 0; i < 3; i++) {
-        particles.push(new Particle(mouseX, mouseY));
-    }
-});
+document.addEventListener("mousemove", (e) => {
+  for (let i = 0; i < 3; i++) {
+    particles.push(new Particle(e.clientX, e.clientY))
+  }
+})
 
 function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-        
-        if (particles[i].life <= 0) {
-            particles.splice(i, 1);
-            i--;
-        }
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update()
+    particles[i].draw()
+
+    if (particles[i].life <= 0) {
+      particles.splice(i, 1)
+      i--
     }
-    
-    requestAnimationFrame(animateParticles);
+  }
+
+  requestAnimationFrame(animateParticles)
 }
 
-animateParticles();
+animateParticles()
 
-window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-});
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+})
 
 // Control Buttons
-const menuBtn = document.getElementById('menuBtn');
-const musicToggle = document.getElementById('musicToggle');
-const soundToggle = document.getElementById('soundToggle');
-const infoPopup = document.getElementById('infoPopup');
-const closePopup = document.getElementById('closePopup');
+const menuBtn = document.getElementById("menuBtn")
+const musicToggle = document.getElementById("musicToggle")
+const soundToggle = document.getElementById("soundToggle")
+const infoPopup = document.getElementById("infoPopup")
+const closePopup = document.getElementById("closePopup")
 
-let musicEnabled = true;
-let soundEnabled = true;
+let musicEnabled = true
+let soundEnabled = true
 
-menuBtn.addEventListener('click', () => {
-    infoPopup.classList.remove('hidden');
-});
+menuBtn.addEventListener("click", () => {
+  infoPopup.classList.remove("hidden")
+})
 
-closePopup.addEventListener('click', () => {
-    infoPopup.classList.add('hidden');
-});
+closePopup.addEventListener("click", () => {
+  infoPopup.classList.add("hidden")
+})
 
-infoPopup.addEventListener('click', (e) => {
-    if (e.target === infoPopup) {
-        infoPopup.classList.add('hidden');
-    }
-});
+infoPopup.addEventListener("click", (e) => {
+  if (e.target === infoPopup) {
+    infoPopup.classList.add("hidden")
+  }
+})
 
-musicToggle.addEventListener('click', () => {
-    musicEnabled = !musicEnabled;
-    musicToggle.classList.toggle('active');
-    // Here you would control background music
-    console.log('Music:', musicEnabled ? 'ON' : 'OFF');
-});
+musicToggle.addEventListener("click", () => {
+  musicEnabled = !musicEnabled
+  musicToggle.classList.toggle("active")
+})
 
-soundToggle.addEventListener('click', () => {
-    soundEnabled = !soundEnabled;
-    soundToggle.classList.toggle('active');
-    // Here you would control sound effects
-    console.log('Sound Effects:', soundEnabled ? 'ON' : 'OFF');
-});
+soundToggle.addEventListener("click", () => {
+  soundEnabled = !soundEnabled
+  soundToggle.classList.toggle("active")
+})
 
 // Audio Buttons
-const audioButtons = document.querySelectorAll('.audio-btn');
+const audioButtons = document.querySelectorAll(".audio-btn")
 
-audioButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const audioNum = btn.dataset.audio;
-        btn.classList.toggle('playing');
-        
-        // Simulate audio playback
-        console.log(`Playing audio ${audioNum}`);
-        
-        // Here you would integrate actual audio playback
-        // For example: new Audio(`audio${audioNum}.mp3`).play();
-        
-        setTimeout(() => {
-            btn.classList.remove('playing');
-        }, 3000);
-    });
-});
+audioButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    btn.classList.toggle("playing")
+    setTimeout(() => {
+      btn.classList.remove("playing")
+    }, 3000)
+  })
+})
 
 // Interactive 3D Orb
-const orb = document.getElementById('interactiveOrb');
-const orbName = document.getElementById('orbName');
-let orbRotationX = 0;
-let orbRotationY = 0;
-let orbInteractions = 0;
+const orb = document.getElementById("interactiveOrb")
+const orbName = document.getElementById("orbName")
+let orbRotationX = 0
+let orbRotationY = 0
+let orbInteractions = 0
 
-orb.addEventListener('mousedown', (e) => {
-    const startX = e.clientX;
-    const startY = e.clientY;
-    
-    function onMouseMove(e) {
-        const deltaX = e.clientX - startX;
-        const deltaY = e.clientY - startY;
-        
-        orbRotationY += deltaX * 0.5;
-        orbRotationX -= deltaY * 0.5;
-        
-        orb.style.transform = `rotateX(${orbRotationX}deg) rotateY(${orbRotationY}deg)`;
-        
-        orbInteractions++;
-        
-        if (orbInteractions > 20 && orbName.classList.contains('hidden')) {
-            orbName.classList.remove('hidden');
-            orbName.classList.add('visible');
-            if (soundEnabled) {
-                console.log('Play reveal sound');
-            }
-        }
-    }
-    
-    function onMouseUp() {
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-    }
-    
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-});
+orb.addEventListener("mousedown", (e) => {
+  const startX = e.clientX
+  const startY = e.clientY
 
-// Touch support for mobile
-orb.addEventListener('touchstart', (e) => {
-    const touch = e.touches[0];
-    const startX = touch.clientX;
-    const startY = touch.clientY;
-    
-    function onTouchMove(e) {
-        const touch = e.touches[0];
-        const deltaX = touch.clientX - startX;
-        const deltaY = touch.clientY - startY;
-        
-        orbRotationY += deltaX * 0.5;
-        orbRotationX -= deltaY * 0.5;
-        
-        orb.style.transform = `rotateX(${orbRotationX}deg) rotateY(${orbRotationY}deg)`;
-        
-        orbInteractions++;
-        
-        if (orbInteractions > 20 && orbName.classList.contains('hidden')) {
-            orbName.classList.remove('hidden');
-            orbName.classList.add('visible');
-        }
+  function onMouseMove(e) {
+    const deltaX = e.clientX - startX
+    const deltaY = e.clientY - startY
+
+    orbRotationY += deltaX * 0.5
+    orbRotationX -= deltaY * 0.5
+
+    orb.style.transform = `rotateX(${orbRotationX}deg) rotateY(${orbRotationY}deg)`
+
+    orbInteractions++
+
+    if (orbInteractions > 20 && orbName.classList.contains("hidden")) {
+      orbName.classList.remove("hidden")
+      orbName.classList.add("visible")
     }
-    
-    function onTouchEnd() {
-        document.removeEventListener('touchmove', onTouchMove);
-        document.removeEventListener('touchend', onTouchEnd);
-    }
-    
-    document.addEventListener('touchmove', onTouchMove);
-    document.addEventListener('touchend', onTouchEnd);
-});
+  }
+
+  function onMouseUp() {
+    document.removeEventListener("mousemove", onMouseMove)
+    document.removeEventListener("mouseup", onMouseUp)
+  }
+
+  document.addEventListener("mousemove", onMouseMove)
+  document.addEventListener("mouseup", onMouseUp)
+})
 
 // Earth Info Button
-const earthInfoBtn = document.getElementById('earthInfoBtn');
-const earthInfo = document.getElementById('earthInfo');
-const earthImg = document.querySelector('.earth-img');
+const earthInfoBtn = document.getElementById("earthInfoBtn")
+const earthInfo = document.getElementById("earthInfo")
+const earthImg = document.querySelector(".earth-img")
 
-earthInfoBtn.addEventListener('click', () => {
-    earthInfo.classList.toggle('visible');
-    earthImg.classList.toggle('rotated');
-});
+earthInfoBtn.addEventListener("click", () => {
+  earthInfo.classList.toggle("visible")
+  earthImg.classList.toggle("rotated")
+})
 
-// Rotating Circles
-const rotatingCircles = document.querySelectorAll('.rotating-circle');
+const rotatingCircles = document.querySelectorAll(".rotating-circle")
 
-rotatingCircles.forEach(circle => {
-    circle.addEventListener('click', () => {
-        let currentRotation = parseInt(circle.dataset.rotation) || 0;
-        currentRotation += 90;
-        circle.dataset.rotation = currentRotation;
-        circle.style.transform = `rotate(${currentRotation}deg)`;
-    });
-});
+rotatingCircles.forEach((circle) => {
+  circle.addEventListener("click", () => {
+    // Rotate the circle
+    let currentRotation = Number.parseInt(circle.dataset.rotation) || 0
+    currentRotation += 90
+    circle.dataset.rotation = currentRotation
+    circle.style.transform = `rotate(${currentRotation}deg)`
 
-// Theme Toggle
-const themeButtons = document.querySelectorAll('.theme-btn');
+    // Change gradient and theme colors based on deity
+    const deity = circle.dataset.deity
+    if (deity === "sue") {
+      // Sué = dark to light (day) with yellow/gold theme
+      document.body.className = "gradient-dark-to-light"
+      document.body.classList.remove("chia-theme")
+    } else if (deity === "chia") {
+      // Chía = light to dark (night) with blue theme
+      document.body.className = "gradient-light-to-dark chia-theme"
+    }
+  })
+})
 
-themeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const theme = btn.dataset.theme;
-        document.body.className = `${theme}-theme`;
-        
-        // Update particle colors
-        particles.forEach(particle => {
-            particle.color = getComputedStyle(document.body).getPropertyValue('--accent-gold').trim();
-        });
-        
-        if (soundEnabled) {
-            console.log('Play theme change sound');
-        }
-    });
-});
+// Navigation Progress Bar
+const navDots = document.querySelectorAll(".nav-dot")
+const sections = document.querySelectorAll(".section")
+
+// Click navigation
+navDots.forEach((dot) => {
+  dot.addEventListener("click", () => {
+    const sectionIndex = Number.parseInt(dot.dataset.section)
+    sections[sectionIndex].scrollIntoView({ behavior: "smooth" })
+  })
+})
+
+// Update active dot on scroll
+function updateActiveNavDot() {
+  const scrollPosition = window.scrollY + window.innerHeight / 2
+
+  sections.forEach((section, index) => {
+    const sectionTop = section.offsetTop
+    const sectionBottom = sectionTop + section.offsetHeight
+
+    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+      navDots.forEach((dot) => dot.classList.remove("active"))
+      navDots[index].classList.add("active")
+    }
+  })
+}
+
+window.addEventListener("scroll", updateActiveNavDot)
+updateActiveNavDot() // Initialize on load
 
 // Scroll Animations
 const observerOptions = {
-    threshold: 0.2,
-    rootMargin: '0px 0px -100px 0px'
-};
+  threshold: 0.2,
+  rootMargin: "0px 0px -100px 0px",
+}
 
 const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, observerOptions);
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible")
+    }
+  })
+}, observerOptions)
 
-const fadeElements = document.querySelectorAll('.fade-in-scroll');
-fadeElements.forEach(el => observer.observe(el));
+const fadeElements = document.querySelectorAll(".fade-in-scroll")
+fadeElements.forEach((el) => observer.observe(el))
 
-// Smooth Scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
+const waterCanvas = document.getElementById("waterCanvas")
+const waterCtx = waterCanvas.getContext("2d")
+waterCanvas.width = window.innerWidth
+waterCanvas.height = window.innerHeight
+
+const ripples = []
+const flowParticles = []
+
+class Ripple {
+  constructor(x, y) {
+    this.x = x
+    this.y = y
+    this.radius = 0
+    this.maxRadius = 80 // Reduced from 150
+    this.speed = 1.5 // Reduced from 2
+    this.opacity = 1
+  }
+
+  update() {
+    this.radius += this.speed
+    this.opacity = 1 - this.radius / this.maxRadius
+  }
+
+  draw() {
+    waterCtx.beginPath()
+    waterCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+    waterCtx.strokeStyle = `rgba(100, 200, 255, ${this.opacity * 0.3})` // Reduced opacity from 0.5
+    waterCtx.lineWidth = 1.5 // Reduced from 2
+    waterCtx.stroke()
+
+    // Inner ripple
+    waterCtx.beginPath()
+    waterCtx.arc(this.x, this.y, this.radius * 0.7, 0, Math.PI * 2)
+    waterCtx.strokeStyle = `rgba(150, 220, 255, ${this.opacity * 0.15})` // Reduced opacity from 0.3
+    waterCtx.lineWidth = 1
+    waterCtx.stroke()
+  }
+}
+
+class FlowParticle {
+  constructor() {
+    this.x = Math.random() * waterCanvas.width
+    this.y = Math.random() * waterCanvas.height
+    this.size = Math.random() * 2 + 1
+    this.speedX = (Math.random() - 0.5) * 0.5
+    this.speedY = Math.random() * 0.3 + 0.2
+    this.opacity = Math.random() * 0.3 + 0.1
+  }
+
+  update() {
+    this.x += this.speedX
+    this.y += this.speedY
+
+    // Wrap around
+    if (this.y > waterCanvas.height) {
+      this.y = 0
+      this.x = Math.random() * waterCanvas.width
+    }
+    if (this.x < 0) this.x = waterCanvas.width
+    if (this.x > waterCanvas.width) this.x = 0
+  }
+
+  draw() {
+    waterCtx.beginPath()
+    waterCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+    waterCtx.fillStyle = `rgba(150, 220, 255, ${this.opacity})`
+    waterCtx.fill()
+  }
+}
+
+// Initialize flow particles
+for (let i = 0; i < 50; i++) {
+  flowParticles.push(new FlowParticle())
+}
+
+const floodSection = document.getElementById("floodSection")
+let isOverFloodSection = false
+
+floodSection.addEventListener("mouseenter", () => {
+  isOverFloodSection = true
+})
+
+floodSection.addEventListener("mouseleave", () => {
+  isOverFloodSection = false
+})
+
+let lastRippleTime = 0
+document.addEventListener("mousemove", (e) => {
+  if (isOverFloodSection) {
+    const now = Date.now()
+    if (now - lastRippleTime > 100) {
+      // Only create ripple every 100ms
+      ripples.push(new Ripple(e.clientX, e.clientY))
+      lastRippleTime = now
+    }
+  }
+})
+
+function animateWater() {
+  waterCtx.clearRect(0, 0, waterCanvas.width, waterCanvas.height)
+
+  const time = Date.now() * 0.0005 // Slower animation
+  for (let i = 0; i < 8; i++) {
+    const x = (Math.sin(time + i * 0.8) * 0.5 + 0.5) * waterCanvas.width
+    const y = (Math.cos(time * 0.5 + i * 0.6) * 0.5 + 0.5) * waterCanvas.height
+    const radius = 40 + Math.sin(time * 2 + i * 2) * 15
+
+    waterCtx.beginPath()
+    waterCtx.arc(x, y, radius, 0, Math.PI * 2)
+    waterCtx.fillStyle = `rgba(100, 200, 255, 0.03)` // More subtle
+    waterCtx.fill()
+  }
+
+  flowParticles.forEach((particle) => {
+    particle.update()
+    particle.draw()
+  })
+
+  // Draw ripples
+  for (let i = 0; i < ripples.length; i++) {
+    ripples[i].update()
+    ripples[i].draw()
+
+    if (ripples[i].radius >= ripples[i].maxRadius) {
+      ripples.splice(i, 1)
+      i--
+    }
+  }
+
+  requestAnimationFrame(animateWater)
+}
+
+animateWater()
+
+window.addEventListener("resize", () => {
+  waterCanvas.width = window.innerWidth
+  waterCanvas.height = window.innerHeight
+})
 
 // Keyboard Navigation
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !infoPopup.classList.contains('hidden')) {
-        infoPopup.classList.add('hidden');
-    }
-});
-
-// Performance: Throttle particle creation on slower devices
-let lastParticleTime = 0;
-const particleThrottle = 16; // ~60fps
-
-document.addEventListener('mousemove', (e) => {
-    const now = Date.now();
-    if (now - lastParticleTime < particleThrottle) return;
-    lastParticleTime = now;
-});
-
-console.log('Cosmogonía Muisca - Interactive Experience Loaded');
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !infoPopup.classList.contains("hidden")) {
+    infoPopup.classList.add("hidden")
+  }
+})
