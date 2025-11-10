@@ -363,9 +363,149 @@ function animateWater() {
 
 animateWater()
 
+// Eclipse Toggle Functionality
+const eclipseToggle1 = document.getElementById("eclipseToggle1")
+const eclipseToggle2 = document.getElementById("eclipseToggle2")
+const eclipseText = document.getElementById("eclipseText")
+
+let eclipseVisible = false
+
+function toggleEclipseText() {
+  eclipseVisible = !eclipseVisible
+  if (eclipseVisible) {
+    eclipseText.classList.add("visible")
+  } else {
+    eclipseText.classList.remove("visible")
+  }
+}
+
+eclipseToggle1.addEventListener("click", toggleEclipseText)
+eclipseToggle2.addEventListener("click", toggleEclipseText)
+
+// Snake Canvas Animation for El Pacto Section
+const snakeCanvas = document.getElementById("snakeCanvas")
+const snakeCtx = snakeCanvas.getContext("2d")
+snakeCanvas.width = window.innerWidth
+snakeCanvas.height = window.innerHeight
+
+class Snake {
+  constructor(isMirror = false) {
+    this.segments = []
+    this.maxSegments = 30
+    this.isMirror = isMirror
+
+    // Initialize snake in center
+    const startX = snakeCanvas.width / 2
+    const startY = snakeCanvas.height / 2
+
+    for (let i = 0; i < this.maxSegments; i++) {
+      this.segments.push({ x: startX, y: startY })
+    }
+  }
+
+  update(targetX, targetY) {
+    // Add new head position
+    if (this.isMirror) {
+      // Mirror horizontally
+      const mirrorX = snakeCanvas.width - targetX
+      this.segments.unshift({ x: mirrorX, y: targetY })
+    } else {
+      this.segments.unshift({ x: targetX, y: targetY })
+    }
+
+    // Remove tail if too long
+    if (this.segments.length > this.maxSegments) {
+      this.segments.pop()
+    }
+  }
+
+  draw() {
+    // Get current theme color
+    const style = getComputedStyle(document.documentElement)
+    const accentColor = style.getPropertyValue("--accent-primary").trim() || "#d4af37"
+
+    // Draw snake body
+    snakeCtx.beginPath()
+    snakeCtx.moveTo(this.segments[0].x, this.segments[0].y)
+
+    for (let i = 1; i < this.segments.length; i++) {
+      snakeCtx.lineTo(this.segments[i].x, this.segments[i].y)
+    }
+
+    snakeCtx.strokeStyle = this.isMirror ? `rgba(192, 192, 192, 0.8)` : accentColor
+    snakeCtx.lineWidth = 8
+    snakeCtx.lineCap = "round"
+    snakeCtx.lineJoin = "round"
+    snakeCtx.stroke()
+
+    // Draw glow
+    snakeCtx.shadowBlur = 20
+    snakeCtx.shadowColor = this.isMirror ? "rgba(192, 192, 192, 0.6)" : accentColor
+    snakeCtx.stroke()
+    snakeCtx.shadowBlur = 0
+
+    // Draw snake head
+    const head = this.segments[0]
+    snakeCtx.beginPath()
+    snakeCtx.arc(head.x, head.y, 10, 0, Math.PI * 2)
+    snakeCtx.fillStyle = this.isMirror ? "#c0c0c0" : accentColor
+    snakeCtx.fill()
+
+    // Draw eyes
+    snakeCtx.fillStyle = "#000"
+    snakeCtx.beginPath()
+    snakeCtx.arc(head.x - 3, head.y - 3, 2, 0, Math.PI * 2)
+    snakeCtx.arc(head.x + 3, head.y - 3, 2, 0, Math.PI * 2)
+    snakeCtx.fill()
+  }
+}
+
+const mainSnake = new Snake(false)
+const mirrorSnake = new Snake(true)
+
+let mouseX = snakeCanvas.width / 2
+let mouseY = snakeCanvas.height / 2
+
+const pactoSection = document.querySelector(".pacto-section")
+let isOverPactoSection = false
+
+pactoSection.addEventListener("mouseenter", () => {
+  isOverPactoSection = true
+})
+
+pactoSection.addEventListener("mouseleave", () => {
+  isOverPactoSection = false
+})
+
+document.addEventListener("mousemove", (e) => {
+  if (isOverPactoSection) {
+    mouseX = e.clientX
+    mouseY = e.clientY
+  }
+})
+
+function animateSnakes() {
+  snakeCtx.clearRect(0, 0, snakeCanvas.width, snakeCanvas.height)
+
+  // Update and draw both snakes
+  mainSnake.update(mouseX, mouseY)
+  mirrorSnake.update(mouseX, mouseY)
+
+  mainSnake.draw()
+  mirrorSnake.draw()
+
+  requestAnimationFrame(animateSnakes)
+}
+
+animateSnakes()
+
 window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
   waterCanvas.width = window.innerWidth
   waterCanvas.height = window.innerHeight
+  snakeCanvas.width = window.innerWidth
+  snakeCanvas.height = window.innerHeight
 })
 
 // Keyboard Navigation

@@ -1,5 +1,5 @@
 :root {
-  /* Added CSS variables for theme colors that switch between Sué (yellow) and Chía (blue) */
+  /* Added CSS variables (cambio de color segun el tema) */
   --accent-primary: #d4af37;
   --accent-primary-rgb: 212, 175, 55;
   --accent-secondary: #c0c0c0;
@@ -9,7 +9,7 @@
   --shadow-light: rgba(255, 255, 255, 0.8);
 }
 
-/* Added theme class for Chía (blue theme) */
+/* Added theme class for Chía (pend cambiar color alt) */
 body.chia-theme {
   --accent-primary: #4a9eff;
   --accent-primary-rgb: 74, 158, 255;
@@ -720,6 +720,201 @@ main {
   transform: translateY(0);
 }
 
+/* Eclipse Toggle Buttons */
+.eclipse-toggle-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0 20px 0;
+  padding: 0 10%;
+}
+
+.eclipse-toggle-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-primary);
+  background: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.eclipse-toggle-btn.left {
+  margin-right: auto;
+}
+
+.eclipse-toggle-btn.right {
+  margin-left: auto;
+}
+
+.eclipse-toggle-btn:hover {
+  background: var(--accent-primary);
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgba(var(--accent-primary-rgb), 0.8);
+}
+
+.toggle-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.6);
+}
+
+.eclipse-text {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  margin: 20px 0;
+}
+
+.eclipse-text.visible {
+  opacity: 1;
+  max-height: 200px;
+}
+
+/* Emergence Container */
+.emergence-container {
+  margin: 60px 0 40px 0;
+}
+
+.emergence-text {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  border-radius: 15px;
+  border: 2px solid var(--accent-primary);
+  box-shadow: 0 0 30px rgba(var(--accent-primary-rgb), 0.4);
+}
+
+/* Simplified Bachué Content */
+.bachue-content-simple {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 40px;
+  align-items: center;
+  margin: 40px 0;
+}
+
+/* Snake Separator */
+.snake-separator {
+  width: 100%;
+  height: 250px;
+  overflow: visible;
+  position: relative;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -100px 0;
+  z-index: 10;
+}
+
+.snake-wave {
+  width: 100%;
+  height: 100%;
+}
+
+.snake-path {
+  fill: url(#snakeScales);
+  stroke: #0d2818;
+  stroke-width: 50;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 15px rgba(34, 139, 34, 0.6)) drop-shadow(0 0 25px rgba(50, 205, 50, 0.3));
+  animation: snakeWave 4s ease-in-out infinite;
+}
+
+.snake-particles-path {
+  fill: url(#snakeParticles);
+  stroke: none;
+  stroke-width: 50;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: snakeWave 4s ease-in-out infinite;
+}
+
+@keyframes snakeWave {
+  0%,
+  100% {
+    d: path("M0,75 Q150,55 300,75 T600,75 T900,75 T1200,75 T1500,75");
+  }
+  50% {
+    d: path("M0,75 Q150,95 300,75 T600,75 T900,75 T1200,75 T1500,75");
+  }
+}
+
+/* El Pacto Section */
+.pacto-section {
+  min-height: 100vh;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
+}
+
+#snakeCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.pacto-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  padding: 40px;
+}
+
+.pacto-text {
+  background: rgba(0, 0, 0, 0.85);
+  padding: 60px;
+  border-radius: 20px;
+  border: 2px solid var(--accent-primary);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 50px rgba(var(--accent-primary-rgb), 0.6);
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+/* El Regalo Section */
+.regalo-section {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.regalo-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 60px;
+  align-items: center;
+  margin: 40px 0;
+}
+
+.corn-image-large {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.corn-img-large {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(var(--accent-primary-rgb), 0.5);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .main-title {
@@ -780,6 +975,24 @@ main {
   }
 
   .flood-text-container {
+    padding: 30px;
+  }
+
+  .bachue-content-simple,
+  .regalo-content {
+    grid-template-columns: 1fr;
+  }
+
+  .eclipse-toggle-container {
+    padding: 0 5%;
+  }
+
+  .eclipse-toggle-btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  .pacto-text {
     padding: 30px;
   }
 }
