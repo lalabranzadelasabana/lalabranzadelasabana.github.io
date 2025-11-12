@@ -1,15 +1,37 @@
+/* Adding custom fonts via @font-face */
+@font-face {
+  font-family: "Rimba Andalas";
+  src: url("./fonts/Rimba-Andalas.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Pangolin";
+  src: url("./fonts/pangolin-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "RudyardRegular";
+  src: url("./fonts/RudyardRegular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
-  /* Added CSS variables (cambio de color segun el tema) */
+  /* Added CSS variables for theme colors that switch between Sué (yellow) and Chía (blue) */
   --accent-primary: #d4af37;
   --accent-primary-rgb: 212, 175, 55;
   --accent-secondary: #c0c0c0;
   --text-light: #f5f5f5;
-  --text-dark: #1a1a1a;
-  --shadow-dark: rgba(0, 0, 0, 0.8);
+  --text-dark: #d3d2d2;
+  --shadow-dark: rgba(70, 0, 102, 0.8);
   --shadow-light: rgba(255, 255, 255, 0.8);
 }
 
-/* Added theme class for Chía (pend cambiar color alt) */
+/* Added theme class for Chía (blue theme) */
 body.chia-theme {
   --accent-primary: #4a9eff;
   --accent-primary-rgb: 74, 158, 255;
@@ -22,7 +44,8 @@ body.chia-theme {
 }
 
 body {
-  font-family: Georgia, "Times New Roman", serif;
+  /* Updated to use custom Pangolin font for body text */
+  font-family: "Pangolin", Georgia, "Times New Roman", serif;
   line-height: 1.6;
   overflow-x: hidden;
   transition: background 0.8s ease;
@@ -30,11 +53,11 @@ body {
 
 /* Gradient Themes */
 body.gradient-dark-to-light {
-  background: linear-gradient(to bottom, #000000 0%, #ffffff 100%);
+  background: linear-gradient(to bottom, #000000 0%, #bebebe 100%);
 }
 
 body.gradient-light-to-dark {
-  background: linear-gradient(to bottom, #ffffff 0%, #000000 100%);
+  background: linear-gradient(to bottom, #000441 0%, #000000 100%);
 }
 
 /* Cursor Trails Canvas */
@@ -189,12 +212,16 @@ body.gradient-light-to-dark {
 }
 
 .popup-content h2 {
+  /* Using Rimba Andalas for popup titles */
+  font-family: "Rimba Andalas", serif;
   color: var(--accent-primary);
   margin-bottom: 20px;
   font-size: 32px;
 }
 
 .popup-content h3 {
+  /* Using Rimba Andalas for popup subtitles */
+  font-family: "Rimba Andalas", serif;
   color: var(--accent-primary);
   margin-top: 20px;
   margin-bottom: 10px;
@@ -265,15 +292,19 @@ main {
 
 /* Typography */
 .main-title {
-  font-size: 64px;
+  /* Using Rimba Andalas for titles */
+  font-family: "Rimba Andalas", serif;
+  font-size: 110px;
   text-align: center;
   margin-bottom: 40px;
   color: var(--accent-primary);
-  text-shadow: 0 0 30px rgba(var(--accent-primary-rgb), 0.8), 0 2px 8px rgba(0, 0, 0, 0.9);
+  text-shadow: 0 0 20px rgba(var(--accent-primary-rgb), 0.8), 0 2px 8px rgba(0, 0, 0, 0.9);
   letter-spacing: 2px;
 }
 
 .section-title {
+  /* Using Rimba Andalas for section titles */
+  font-family: "Rimba Andalas", serif;
   font-size: 48px;
   text-align: center;
   margin-bottom: 30px;
@@ -281,7 +312,12 @@ main {
   text-shadow: 0 0 20px rgba(var(--accent-primary-rgb), 0.6), 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
-/* Improved text contrast with stronger shadows and better color choices */
+h2.section-title,
+.celestial-card h3,
+.bochica-text h2 {
+  font-family: "RudyardRegular", "Rimba Andalas", serif;
+}
+
 .narrative-text {
   font-size: 20px;
   line-height: 1.8;
@@ -297,7 +333,7 @@ main {
 }
 
 .gradient-light-to-dark .narrative-text {
-  color: #000000;
+  color: #b4b4b4;
   text-shadow: 0 2px 8px rgba(255, 255, 255, 0.9), 0 0 20px rgba(255, 255, 255, 0.7);
 }
 
@@ -339,7 +375,7 @@ main {
 }
 
 .gradient-light-to-dark .small-text {
-  color: #1a1a1a;
+  color: #b4b4b4;
   text-shadow: 0 1px 4px rgba(255, 255, 255, 0.8);
 }
 
@@ -415,8 +451,26 @@ main {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fff, var(--accent-primary), rgba(var(--accent-primary-rgb), 0.6));
-  box-shadow: 0 0 40px rgba(var(--accent-primary-rgb), 0.8), inset 0 0 40px rgba(0, 0, 0, 0.3);
+  /* Enhanced radial gradients and added multiple layers for 3D spherical effect */
+  background: radial-gradient(
+      circle at 35% 35%,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.3) 8%,
+      transparent 15%
+    ), radial-gradient(circle at 30% 30%, rgba(var(--accent-primary-rgb), 0.4) 0%, transparent 20%),
+    radial-gradient(
+      ellipse at 50% 50%,
+      var(--accent-primary) 0%,
+      rgba(var(--accent-primary-rgb), 0.8) 40%,
+      rgba(var(--accent-primary-rgb), 0.4) 70%,
+      transparent 100%
+    ), radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+  /* Added inset shadows and outer glow for depth and dimension */
+  box-shadow:
+    inset -15px -15px 30px rgba(0, 0, 0, 0.5),
+    inset 8px 8px 20px rgba(255, 255, 255, 0.2),
+    0 0 40px rgba(var(--accent-primary-rgb), 0.8),
+    0 0 80px rgba(var(--accent-primary-rgb), 0.4);
   transform-style: preserve-3d;
   animation: float 6s ease-in-out infinite;
 }
@@ -444,6 +498,8 @@ main {
 }
 
 .orb-name h2 {
+  /* Using Rimba Andalas for orb name */
+  font-family: "Rimba Andalas", serif;
   font-size: 42px;
   color: var(--accent-primary);
   margin-bottom: 10px;
@@ -566,17 +622,12 @@ main {
 }
 
 .celestial-card h3 {
+  /* Using RudyardRegular only for Sué and Chía titles */
+  font-family: "RudyardRegular", "Rimba Andalas", serif;
   font-size: 32px;
   color: var(--accent-primary);
   margin: 20px 0;
   text-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.6);
-}
-
-.celestial-card p {
-  color: #f5f5f5;
-  font-size: 18px;
-  line-height: 1.6;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .rotating-circle {
@@ -915,84 +966,64 @@ main {
   box-shadow: 0 10px 40px rgba(var(--accent-primary-rgb), 0.5);
 }
 
+/* Adding complete video background styling for intro section */
+.intro-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-section video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.intro-section .content-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .main-title {
-    font-size: 42px;
+    font-size: 60px;
   }
 
   .section-title {
     font-size: 32px;
   }
 
-  .narrative-text {
-    font-size: 18px;
+  .celestial-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
 
-  .celestial-grid,
-  .bachue-content,
   .bochica-grid {
     grid-template-columns: 1fr;
-  }
-
-  .nav-progress {
-    top: 10px;
-    padding: 10px 15px;
-  }
-
-  .nav-dots {
-    gap: 12px;
-  }
-
-  .nav-dot {
-    width: 10px;
-    height: 10px;
-  }
-
-  .nav-dot::after {
-    display: none;
-  }
-
-  .controls {
-    top: 70px;
-    right: 10px;
-    gap: 5px;
-  }
-
-  .control-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-  }
-
-  .popup-content {
-    padding: 20px;
-  }
-
-  .earth-img {
-    width: 300px;
-    height: 300px;
-  }
-
-  .flood-text-container {
-    padding: 30px;
+    gap: 40px;
   }
 
   .bachue-content-simple,
   .regalo-content {
     grid-template-columns: 1fr;
+    gap: 30px;
   }
 
-  .eclipse-toggle-container {
-    padding: 0 5%;
+  .nav-progress {
+    padding: 10px 20px;
   }
 
-  .eclipse-toggle-btn {
-    width: 50px;
-    height: 50px;
+  .nav-dots {
+    gap: 10px;
   }
 
-  .pacto-text {
-    padding: 30px;
+  .nav-dot {
+    width: 10px;
+    height: 10px;
   }
 }

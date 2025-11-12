@@ -93,11 +93,33 @@ infoPopup.addEventListener("click", (e) => {
 musicToggle.addEventListener("click", () => {
   musicEnabled = !musicEnabled
   musicToggle.classList.toggle("active")
+
+  ambientAudios.forEach((audio) => {
+    if (audio) {
+      if (musicEnabled) {
+        audio.play().catch((err) => console.log("[v0] Audio play error:", err))
+      } else {
+        audio.pause()
+      }
+    }
+  })
+
+  if (videoAudio) {
+    if (musicEnabled) {
+      videoAudio.play().catch((err) => console.log("[v0] Audio play error:", err))
+    } else {
+      videoAudio.pause()
+    }
+  }
 })
 
 soundToggle.addEventListener("click", () => {
   soundEnabled = !soundEnabled
   soundToggle.classList.toggle("active")
+
+  if (videoAudio) {
+    videoAudio.volume = soundEnabled ? 0.5 : 0
+  }
 })
 
 // Audio Buttons
@@ -512,5 +534,69 @@ window.addEventListener("resize", () => {
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && !infoPopup.classList.contains("hidden")) {
     infoPopup.classList.add("hidden")
+  }
+})
+
+// Ambient Audio Management
+const ambientAudios = [
+  document.getElementById("ambientAudio1"),
+  document.getElementById("ambientAudio2"),
+  document.getElementById("ambientAudio3"),
+]
+
+const videoAudio = document.getElementById("videoAudio")
+
+let currentAmbientIndex = 0
+
+// Set all audio elements to loop
+ambientAudios.forEach((audio) => {
+  if (audio) {
+    audio.loop = true
+    audio.volume = 0.3
+  }
+})
+
+if (videoAudio) {
+  videoAudio.volume = 0.5
+}
+
+function playRandomAmbient() {
+  // Stop all ambient sounds
+  ambientAudios.forEach((audio) => {
+    if (audio) audio.pause()
+  })
+
+  // Select random audio
+  currentAmbientIndex = Math.floor(Math.random() * ambientAudios.length)
+  const selectedAudio = ambientAudios[currentAmbientIndex]
+
+  if (selectedAudio && musicEnabled) {
+    selectedAudio.currentTime = 0
+    selectedAudio.play().catch((err) => console.log("[v0] Audio play error:", err))
+  }
+}
+
+// Play first ambient sound on user interaction
+document.addEventListener(
+  "click",
+  () => {
+    if (!musicEnabled) return
+
+    const hasPlayed = ambientAudios.some((audio) => audio && audio.played.length > 0)
+    if (!hasPlayed && ambientAudios[currentAmbientIndex]) {
+      ambientAudios[currentAmbientIndex].play().catch((err) => console.log("[v0] Audio play error:", err))
+    }
+  },
+  { once: true },
+)
+
+ambientAudios.forEach((audio) => {
+  if (audio) {
+    audio.addEventListener("ended", () => {
+      if (musicEnabled) {
+        // Wait a moment then play random next audio
+        setTimeout(playRandomAmbient, 2000)
+      }
+    })
   }
 })

@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cosmogonía Muisca - El Origen del Universo</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Adding hidden audio elements for background ambient sounds -->
+    <audio id="ambientAudio1" loop preload="auto">
+        <source src="./audio/Ethereal Cinematic Ambience.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="videoAudio" preload="auto">
+        <source src="./audio/audio.mp3" type="audio/mp4">
+    </audio>
 </head>
 <body class="gradient-dark-to-light">
     <!-- Cursor Light Trails Canvas -->
@@ -62,18 +69,19 @@
 
     <!-- Main Content -->
     <main>
-        <!-- Section 1: Oscuridad -->
+        <!-- Section 1: Darkness -->
         <section class="section intro-section fade-in-scroll" data-section="0">
+            <!-- Added loop attribute to video -->
+            <video autoplay muted playsinline loop>
+                <source src="./video/Fondo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
             <div class="content-wrapper">
                 <h1 class="main-title">Cosmogonía Muisca</h1>
                 <p class="intro-text">
                     Hubo un tiempo en el que no existía nada. Ni montañas, ni lagunas, ni soles ni lunas. 
                     Solo la oscuridad lo ocupaba todo, un silencio profundo que parecía eterno.
                 </p>
-                <button class="audio-btn" data-audio="1">
-                    <span class="audio-icon">▶</span>
-                    Iniciar audio 1
-                </button>
             </div>
         </section>
 
@@ -115,7 +123,7 @@
             </div>
         </section>
 
-        <!-- Section 3: Condor-->
+        <!-- Section 3: Black Birds -->
         <section class="section birds-section fade-in-scroll" data-section="2">
             <div class="content-wrapper">
                 <div class="birds-image">
@@ -143,7 +151,7 @@
             </div>
         </section>
 
-        <!-- Section 4: Sué - Chía -->
+        <!-- Section 4: Sué and Chía -->
         <section class="section celestial-section fade-in-scroll" data-section="3">
             <div class="content-wrapper">
                 <h2 class="section-title">Los Ritmos del Cosmos</h2>
@@ -236,7 +244,7 @@
             </div>
         </section>
 
-        <!-- Separator de ssssserpiente xd -->
+        <!-- Added snake wave separator -->
         <div class="snake-separator">
             <svg class="snake-wave" viewBox="0 0 1500 150" preserveAspectRatio="none">
                 <defs>
@@ -306,7 +314,7 @@
                         </circle>
                         <circle cx="35" cy="40" r="1.5" fill="#4a9d6f" opacity="0.9">
                             <animateTransform attributeName="transform" type="translate" 
-                                from="0 0" to="100 0" dur="8s" repeatCount="indefinite"/>
+                                from="0 0" to="100 0" dur="11s" repeatCount="indefinite"/>
                         </circle>
                         <circle cx="55" cy="42" r="1.5" fill="#5fb878" opacity="0.7">
                             <animateTransform attributeName="transform" type="translate" 
@@ -395,7 +403,7 @@
             </svg>
         </div>
 
-        <!-- Section: El Pacto -->
+        <!-- New Section: El Pacto -->
         <section class="section pacto-section" data-section="5">
             <canvas id="snakeCanvas"></canvas>
             <div class="pacto-content">
@@ -406,7 +414,7 @@
             </div>
         </section>
 
-        <!-- Section 6: Awa -->
+        <!-- Section 6: The Flood (Full Screen with Water Effect) -->
         <section id="floodSection" class="section flood-section" data-section="6">
             <canvas id="waterCanvas"></canvas>
             <div class="flood-content">
@@ -467,7 +475,7 @@
             </div>
         </section>
 
-        <!-- New Section: El Regalo -->
+        <!-- New Section: El Regalo (moved content from Bachué) -->
         <section class="section regalo-section fade-in-scroll" data-section="8">
             <div class="content-wrapper">
                 <h2 class="section-title">El Regalo</h2>
