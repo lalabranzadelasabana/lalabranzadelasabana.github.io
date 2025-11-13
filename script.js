@@ -1,8 +1,18 @@
-// Cursor Light Trails
+// ============================================================================
+// INITIALIZATION & SETUP
+// ============================================================================
+
 const canvas = document.getElementById("cursorTrails")
-const ctx = canvas.getContext("2d")
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
+const ctx = canvas ? canvas.getContext("2d") : null
+
+if (canvas && ctx) {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+}
+
+// ============================================================================
+// CURSOR LIGHT TRAILS + FIREWORKS
+// ============================================================================
 
 const particles = []
 
@@ -14,7 +24,7 @@ class Particle {
     this.speedX = Math.random() * 2 - 1
     this.speedY = Math.random() * 2 - 1
     this.life = 100
-    // Get current theme color
+
     const style = getComputedStyle(document.documentElement)
     this.color = style.getPropertyValue("--accent-primary").trim() || "#d4af37"
   }
@@ -27,6 +37,7 @@ class Particle {
   }
 
   draw() {
+    if (!ctx) return
     ctx.fillStyle = this.color
     ctx.globalAlpha = this.life / 100
     ctx.beginPath()
@@ -37,36 +48,96 @@ class Particle {
   }
 }
 
-document.addEventListener("mousemove", (e) => {
-  for (let i = 0; i < 3; i++) {
-    particles.push(new Particle(e.clientX, e.clientY))
-  }
-})
-
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-  for (let i = 0; i < particles.length; i++) {
-    particles[i].update()
-    particles[i].draw()
-
-    if (particles[i].life <= 0) {
-      particles.splice(i, 1)
-      i--
+// Fireworks for orbImage
+class Firework {
+  constructor(x, y) {
+    this.x = x
+    this.y = y
+    this.particles = []
+    for (let i = 0; i < 50; i++) {
+      this.particles.push({
+        x: x,
+        y: y,
+        vx: (Math.random() - 0.5) * 12,
+        vy: (Math.random() - 0.5) * 12,
+        life: 1.5,
+        color: `hsl(${Math.random() * 60 + 30}, 100%, 50%)`,
+      })
     }
   }
 
-  requestAnimationFrame(animateParticles)
+  update(deltaTime) {
+    this.particles.forEach((p) => {
+      p.x += p.vx
+      p.y += p.vy
+      p.vy += 0.2
+      p.life -= deltaTime
+    })
+  }
+
+  draw(ctx) {
+    this.particles.forEach((p) => {
+      if (p.life > 0) {
+        ctx.globalAlpha = p.life / 1.5
+        ctx.fillStyle = p.color
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, 5, 0, Math.PI * 2)
+        ctx.fill()
+      }
+    })
+    ctx.globalAlpha = 1
+  }
+
+  isAlive() {
+    return this.particles.some((p) => p.life > 0)
+  }
 }
 
-animateParticles()
+const fireworks = []
 
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
-})
+if (canvas && ctx) {
+  document.addEventListener("mousemove", (e) => {
+    for (let i = 0; i < 3; i++) {
+      particles.push(new Particle(e.clientX, e.clientY))
+    }
+  })
 
-// Control Buttons
+  function animateParticles() {
+    if (!canvas || !ctx) return
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    // Fireworks
+    for (let i = fireworks.length - 1; i >= 0; i--) {
+      const fw = fireworks[i]
+      fw.update(0.016) // ~60fps
+      fw.draw(ctx)
+      if (!fw.isAlive()) {
+        fireworks.splice(i, 1)
+      }
+    }
+
+    // Cursor particles
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update()
+      particles[i].draw()
+
+      if (particles[i].life <= 0) {
+        particles.splice(i, 1)
+        i--
+      }
+    }
+
+    requestAnimationFrame(animateParticles)
+  }
+
+  animateParticles()
+}
+
+// ============================================================================
+// CONTROL BUTTONS
+// ============================================================================
+
 const menuBtn = document.getElementById("menuBtn")
 const musicToggle = document.getElementById("musicToggle")
 const soundToggle = document.getElementById("soundToggle")
@@ -76,55 +147,124 @@ const closePopup = document.getElementById("closePopup")
 let musicEnabled = true
 let soundEnabled = true
 
-menuBtn.addEventListener("click", () => {
-  infoPopup.classList.remove("hidden")
+if (menuBtn) {
+  menuBtn.addEventListener("click", () => {
+    infoPopup?.classList.remove("hidden")
+  })
+}
+
+if (closePopup) {
+  closePopup.addEventListener("click", () => {
+    infoPopup?.classList.add("hidden")
+  })
+}
+
+if (infoPopup) {
+  infoPopup.addEventListener("click", (e) => {
+    if (e.target === infoPopup) {
+      infoPopup.classList.add("hidden")
+    }
+  })
+}
+
+// ============================================================================
+// AMBIENT AUDIO MANAGEMENT
+// ============================================================================
+
+const ambientAudios = [
+  document.getElementById("ambientAudio1"),
+  document.getElementById("ambientAudio2"),
+  document.getElementById("ambientAudio3"),
+].filter(Boolean)
+
+const videoAudio = document.getElementById("videoAudio")
+
+let currentAmbientIndex = 0
+
+ambientAudios.forEach((audio) => {
+  audio.loop = true
+  audio.volume = 0.3
 })
 
-closePopup.addEventListener("click", () => {
-  infoPopup.classList.add("hidden")
-})
+if (videoAudio) {
+  videoAudio.volume = 0.5
+}
 
-infoPopup.addEventListener("click", (e) => {
-  if (e.target === infoPopup) {
-    infoPopup.classList.add("hidden")
+function playRandomAmbient() {
+  ambientAudios.forEach((audio) => audio.pause())
+
+  if (!ambientAudios.length) return
+
+  currentAmbientIndex = Math.floor(Math.random() * ambientAudios.length)
+  const selectedAudio = ambientAudios[currentAmbientIndex]
+
+  if (selectedAudio && musicEnabled) {
+    selectedAudio.currentTime = 0
+    selectedAudio.play().catch((err) => console.log("[v0] Audio error:", err))
   }
-})
+}
 
-musicToggle.addEventListener("click", () => {
-  musicEnabled = !musicEnabled
-  musicToggle.classList.toggle("active")
+if (musicToggle) {
+  musicToggle.addEventListener("click", () => {
+    musicEnabled = !musicEnabled
+    musicToggle.classList.toggle("active")
 
-  ambientAudios.forEach((audio) => {
-    if (audio) {
+    ambientAudios.forEach((audio) => {
       if (musicEnabled) {
-        audio.play().catch((err) => console.log("[v0] Audio play error:", err))
+        audio.play().catch((err) => console.log("[v0] Audio error:", err))
       } else {
         audio.pause()
       }
+    })
+
+    if (videoAudio) {
+      if (musicEnabled) {
+        videoAudio.play().catch((err) => console.log("[v0] Audio error:", err))
+      } else {
+        videoAudio.pause()
+      }
     }
   })
+}
 
-  if (videoAudio) {
-    if (musicEnabled) {
-      videoAudio.play().catch((err) => console.log("[v0] Audio play error:", err))
-    } else {
-      videoAudio.pause()
+if (soundToggle) {
+  soundToggle.addEventListener("click", () => {
+    soundEnabled = !soundEnabled
+    soundToggle.classList.toggle("active")
+
+    if (videoAudio) {
+      videoAudio.volume = soundEnabled ? 0.5 : 0
     }
-  }
+  })
+}
+
+document.addEventListener(
+  "click",
+  () => {
+    if (!musicEnabled || !ambientAudios.length) return
+    const hasPlayed = ambientAudios.some((audio) => audio.played.length > 0)
+    if (!hasPlayed && ambientAudios[currentAmbientIndex]) {
+      ambientAudios[currentAmbientIndex]
+        .play()
+        .catch((err) => console.log("[v0] Audio error:", err))
+    }
+  },
+  { once: true },
+)
+
+ambientAudios.forEach((audio) => {
+  audio.addEventListener("ended", () => {
+    if (musicEnabled) {
+      setTimeout(playRandomAmbient, 2000)
+    }
+  })
 })
 
-soundToggle.addEventListener("click", () => {
-  soundEnabled = !soundEnabled
-  soundToggle.classList.toggle("active")
+// ============================================================================
+// AUDIO BUTTONS
+// ============================================================================
 
-  if (videoAudio) {
-    videoAudio.volume = soundEnabled ? 0.5 : 0
-  }
-})
-
-// Audio Buttons
 const audioButtons = document.querySelectorAll(".audio-btn")
-
 audioButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
     btn.classList.toggle("playing")
@@ -134,99 +274,168 @@ audioButtons.forEach((btn) => {
   })
 })
 
-// Clickable Image Carousel
+// ============================================================================
+// IMAGE CAROUSEL (ORB) + FIREWORKS TRIGGER
+// ============================================================================
+
 const orbImage = document.getElementById("orbImage")
 const orbName = document.getElementById("orbName")
 
 const sphereImages = [
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-rFGxbbGEF8MNfjPQ27yGufJJ49oQEv.png",
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2-9vd99WZvSQwJicf7X3PRF1kfC4HjEB.png",
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3-PTSTl1NulzXA3wggRiyqR6g7i6I7hc.png",
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4-RoEhFCVYUmKTYXvOc7Vv8RNKjSsVDo.png",
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/5-W3O6yXelTljE7KSQ4vDjIRXXjHPBIP.png",
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/6-lArN6ILr2kN8BjdCOoXkqHha1v54Nj.png",
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/7-n8LpaIJOPHMfkDMB7Q9YJIQNnweC4A.png",
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/8-gSHNgUbgBC4kUj2svFGyb9PdcNB2BG.png",
+  "./public/images/1.png",
+  "./public/images/2.png",
+  "./public/images/3.png",
+  "./public/images/4.png",
+  "./public/images/5.png",
+  "./public/images/6.png",
+  "./public/images/7.png",
+  "./public/images/8.png",
 ]
 
 let currentImageIndex = 0
 
-orbImage.addEventListener("click", () => {
-  currentImageIndex = (currentImageIndex + 1) % sphereImages.length
-  orbImage.src = sphereImages[currentImageIndex]
+if (orbImage) {
+  orbImage.addEventListener("click", () => {
+    currentImageIndex = (currentImageIndex + 1) % sphereImages.length
+    orbImage.src = sphereImages[currentImageIndex]
 
-  // Show name after first click
-  if (currentImageIndex > 0 && orbName.classList.contains("hidden")) {
-    orbName.classList.remove("hidden")
-    orbName.classList.add("visible")
-  }
-})
+    // Trigger fireworks on last image
+    if (currentImageIndex === sphereImages.length - 1 && ctx && canvas) {
+      const rect = orbImage.getBoundingClientRect()
+      const x = rect.left + rect.width / 2
+      const y = rect.top + rect.height / 2
+      for (let i = 0; i < 5; i++) {
+        fireworks.push(new Firework(x, y))
+      }
+    }
 
-// Earth Info Button
-const earthInfoBtn = document.getElementById("earthInfoBtn")
-const earthInfo = document.getElementById("earthInfo")
-const earthImg = document.querySelector(".earth-img")
-const earthImage = document.getElementById("earthImage")
+    if (currentImageIndex > 0 && orbName?.classList.contains("hidden")) {
+      orbName.classList.remove("hidden")
+      orbName.classList.add("visible")
+    }
+  })
+}
 
-const lastScrollY = 0
-const earthContainer = document.querySelector(".earth-container")
-
-window.addEventListener("scroll", () => {
-  const earthRect = earthContainer.getBoundingClientRect()
-  const earthCenterY = earthRect.top + earthRect.height / 2
-  const windowCenterY = window.innerHeight / 2
-
-  // Calculate rotation based on scroll position (0 to 360 degrees)
-  const scrollProgress = (window.scrollY % 3000) / 3000 // Completes rotation every 3000px scroll
-  const rotationDegree = scrollProgress * 360
-
-  // Apply rotation when image is in viewport
-  if (earthRect.top < window.innerHeight && earthRect.bottom > 0) {
-    earthImage.style.transform = `rotateZ(${rotationDegree}deg)`
-  }
-})
-
-earthInfoBtn.addEventListener("click", () => {
-  earthInfo.classList.toggle("visible")
-  earthImg.classList.toggle("rotated")
-})
+// ============================================================================
+// ROTATING CIRCLES (SUÉ & CHÍA THEMES)
+// ============================================================================
 
 const rotatingCircles = document.querySelectorAll(".rotating-circle")
 
 rotatingCircles.forEach((circle) => {
   circle.addEventListener("click", () => {
-    // Rotate the circle
     let currentRotation = Number.parseInt(circle.dataset.rotation) || 0
     currentRotation += 90
     circle.dataset.rotation = currentRotation
     circle.style.transform = `rotate(${currentRotation}deg)`
 
-    // Change gradient and theme colors based on deity
     const deity = circle.dataset.deity
     if (deity === "sue") {
-      // Sué = dark to light (day) with yellow/gold theme
       document.body.className = "gradient-dark-to-light"
       document.body.classList.remove("chia-theme")
     } else if (deity === "chia") {
-      // Chía = light to dark (night) with blue theme
       document.body.className = "gradient-light-to-dark chia-theme"
     }
   })
 })
 
-// Navigation Progress Bar
+// ============================================================================
+// EARTH ROTATION & INFO (tierra.png)
+// ============================================================================
+
+const earthImage = document.getElementById("earthImage")
+const earthContainer = document.querySelector(".earth-container")
+const earthInfoBtn = document.getElementById("earthInfoBtn")
+const earthInfo = document.getElementById("earthInfo")
+
+// Rotación basada en scroll: gira 360° cada 3000px de scroll
+window.addEventListener("scroll", () => {
+  if (!earthContainer || !earthImage) return
+
+  const earthRect = earthContainer.getBoundingClientRect()
+
+  if (earthRect.top < window.innerHeight && earthRect.bottom > 0) {
+    const scrollProgress = (window.scrollY % 3000) / 3000
+    const rotationDegree = scrollProgress * 360
+    earthImage.style.transform = `rotateZ(${rotationDegree}deg)`
+  }
+})
+
+if (earthInfoBtn) {
+  earthInfoBtn.addEventListener("click", () => {
+    earthInfo?.classList.toggle("visible")
+  })
+}
+
+// ============================================================================
+// INFO BUTTONS (BIRDS, BACHUÉ, BOCHICA)
+// ============================================================================
+
+const birdsInfoBtn = document.getElementById("birdsInfoBtn")
+const birdsInfo = document.getElementById("birdsInfo")
+
+if (birdsInfoBtn) {
+  birdsInfoBtn.addEventListener("click", () => {
+    birdsInfo?.classList.toggle("visible")
+  })
+}
+
+const bachueInfoBtn = document.getElementById("bachueInfoBtn")
+const bachueInfo = document.getElementById("bachueInfo")
+
+if (bachueInfoBtn) {
+  bachueInfoBtn.addEventListener("click", () => {
+    bachueInfo?.classList.toggle("visible")
+  })
+}
+
+const bochicaInfoBtn = document.getElementById("bochicaInfoBtn")
+const bochicaInfo = document.getElementById("bochicaInfo")
+
+if (bochicaInfoBtn) {
+  bochicaInfoBtn.addEventListener("click", () => {
+    bochicaInfo?.classList.toggle("visible")
+  })
+}
+
+// ============================================================================
+// ECLIPSE TOGGLE
+// ============================================================================
+
+const eclipseToggle1 = document.getElementById("eclipseToggle1")
+const eclipseToggle2 = document.getElementById("eclipseText")
+const eclipseText = document.getElementById("eclipseText")
+
+let eclipseVisible = false
+
+function toggleEclipseText() {
+  eclipseVisible = !eclipseVisible
+  if (eclipseText) {
+    if (eclipseVisible) {
+      eclipseText.classList.add("visible")
+    } else {
+      eclipseText.classList.remove("visible")
+    }
+  }
+}
+
+if (eclipseToggle1) eclipseToggle1.addEventListener("click", toggleEclipseText)
+if (eclipseToggle2) eclipseToggle2.addEventListener("click", toggleEclipseText)
+
+// ============================================================================
+// NAVIGATION PROGRESS BAR
+// ============================================================================
+
 const navDots = document.querySelectorAll(".nav-dot")
 const sections = document.querySelectorAll(".section")
 
-// Click navigation
 navDots.forEach((dot) => {
   dot.addEventListener("click", () => {
     const sectionIndex = Number.parseInt(dot.dataset.section)
-    sections[sectionIndex].scrollIntoView({ behavior: "smooth" })
+    sections[sectionIndex]?.scrollIntoView({ behavior: "smooth" })
   })
 })
 
-// Update active dot on scroll
 function updateActiveNavDot() {
   const scrollPosition = window.scrollY + window.innerHeight / 2
 
@@ -236,15 +445,18 @@ function updateActiveNavDot() {
 
     if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
       navDots.forEach((dot) => dot.classList.remove("active"))
-      navDots[index].classList.add("active")
+      navDots[index]?.classList.add("active")
     }
   })
 }
 
 window.addEventListener("scroll", updateActiveNavDot)
-updateActiveNavDot() // Initialize on load
+updateActiveNavDot()
 
-// Scroll Animations
+// ============================================================================
+// SCROLL ANIMATIONS
+// ============================================================================
+
 const observerOptions = {
   threshold: 0.2,
   rootMargin: "0px 0px -100px 0px",
@@ -261,10 +473,17 @@ const observer = new IntersectionObserver((entries) => {
 const fadeElements = document.querySelectorAll(".fade-in-scroll")
 fadeElements.forEach((el) => observer.observe(el))
 
+// ============================================================================
+// WATER EFFECT (FLOOD SECTION)
+// ============================================================================
+
 const waterCanvas = document.getElementById("waterCanvas")
-const waterCtx = waterCanvas.getContext("2d")
-waterCanvas.width = window.innerWidth
-waterCanvas.height = window.innerHeight
+const waterCtx = waterCanvas ? waterCanvas.getContext("2d") : null
+
+if (waterCanvas && waterCtx) {
+  waterCanvas.width = window.innerWidth
+  waterCanvas.height = window.innerHeight
+}
 
 const ripples = []
 const flowParticles = []
@@ -274,8 +493,8 @@ class Ripple {
     this.x = x
     this.y = y
     this.radius = 0
-    this.maxRadius = 80 // Reduced from 150
-    this.speed = 1.5 // Reduced from 2
+    this.maxRadius = 80
+    this.speed = 1.5
     this.opacity = 1
   }
 
@@ -285,16 +504,17 @@ class Ripple {
   }
 
   draw() {
+    if (!waterCtx) return
+
     waterCtx.beginPath()
     waterCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
-    waterCtx.strokeStyle = `rgba(100, 200, 255, ${this.opacity * 0.3})` // Reduced opacity from 0.5
-    waterCtx.lineWidth = 1.5 // Reduced from 2
+    waterCtx.strokeStyle = `rgba(100, 200, 255, ${this.opacity * 0.3})`
+    waterCtx.lineWidth = 1.5
     waterCtx.stroke()
 
-    // Inner ripple
     waterCtx.beginPath()
     waterCtx.arc(this.x, this.y, this.radius * 0.7, 0, Math.PI * 2)
-    waterCtx.strokeStyle = `rgba(150, 220, 255, ${this.opacity * 0.15})` // Reduced opacity from 0.3
+    waterCtx.strokeStyle = `rgba(150, 220, 255, ${this.opacity * 0.15})`
     waterCtx.lineWidth = 1
     waterCtx.stroke()
   }
@@ -314,7 +534,6 @@ class FlowParticle {
     this.x += this.speedX
     this.y += this.speedY
 
-    // Wrap around
     if (this.y > waterCanvas.height) {
       this.y = 0
       this.x = Math.random() * waterCanvas.width
@@ -324,6 +543,7 @@ class FlowParticle {
   }
 
   draw() {
+    if (!waterCtx) return
     waterCtx.beginPath()
     waterCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
     waterCtx.fillStyle = `rgba(150, 220, 255, ${this.opacity})`
@@ -331,94 +551,81 @@ class FlowParticle {
   }
 }
 
-// Initialize flow particles
-for (let i = 0; i < 50; i++) {
-  flowParticles.push(new FlowParticle())
-}
+if (waterCanvas && waterCtx) {
+  for (let i = 0; i < 50; i++) {
+    flowParticles.push(new FlowParticle())
+  }
 
-const floodSection = document.getElementById("floodSection")
-let isOverFloodSection = false
+  const floodSection = document.getElementById("floodSection")
+  let isOverFloodSection = false
 
-floodSection.addEventListener("mouseenter", () => {
-  isOverFloodSection = true
-})
+  if (floodSection) {
+    floodSection.addEventListener("mouseenter", () => {
+      isOverFloodSection = true
+    })
 
-floodSection.addEventListener("mouseleave", () => {
-  isOverFloodSection = false
-})
+    floodSection.addEventListener("mouseleave", () => {
+      isOverFloodSection = false
+    })
+  }
 
-let lastRippleTime = 0
-document.addEventListener("mousemove", (e) => {
-  if (isOverFloodSection) {
-    const now = Date.now()
-    if (now - lastRippleTime > 100) {
-      // Only create ripple every 100ms
-      ripples.push(new Ripple(e.clientX, e.clientY))
-      lastRippleTime = now
+  let lastRippleTime = 0
+  document.addEventListener("mousemove", (e) => {
+    if (isOverFloodSection) {
+      const now = Date.now()
+      if (now - lastRippleTime > 100) {
+        ripples.push(new Ripple(e.clientX, e.clientY))
+        lastRippleTime = now
+      }
     }
-  }
-})
-
-function animateWater() {
-  waterCtx.clearRect(0, 0, waterCanvas.width, waterCanvas.height)
-
-  const time = Date.now() * 0.0005 // Slower animation
-  for (let i = 0; i < 8; i++) {
-    const x = (Math.sin(time + i * 0.8) * 0.5 + 0.5) * waterCanvas.width
-    const y = (Math.cos(time * 0.5 + i * 0.6) * 0.5 + 0.5) * waterCanvas.height
-    const radius = 40 + Math.sin(time * 2 + i * 2) * 15
-
-    waterCtx.beginPath()
-    waterCtx.arc(x, y, radius, 0, Math.PI * 2)
-    waterCtx.fillStyle = `rgba(100, 200, 255, 0.03)` // More subtle
-    waterCtx.fill()
-  }
-
-  flowParticles.forEach((particle) => {
-    particle.update()
-    particle.draw()
   })
 
-  // Draw ripples
-  for (let i = 0; i < ripples.length; i++) {
-    ripples[i].update()
-    ripples[i].draw()
+  function animateWater() {
+    waterCtx.clearRect(0, 0, waterCanvas.width, waterCanvas.height)
 
-    if (ripples[i].radius >= ripples[i].maxRadius) {
-      ripples.splice(i, 1)
-      i--
+    const time = Date.now() * 0.0005
+    for (let i = 0; i < 8; i++) {
+      const x = (Math.sin(time + i * 0.8) * 0.5 + 0.5) * waterCanvas.width
+      const y = (Math.cos(time * 0.5 + i * 0.6) * 0.5 + 0.5) * waterCanvas.height
+      const radius = 40 + Math.sin(time * 2 + i * 2) * 15
+
+      waterCtx.beginPath()
+      waterCtx.arc(x, y, radius, 0, Math.PI * 2)
+      waterCtx.fillStyle = `rgba(100, 200, 255, 0.03)`
+      waterCtx.fill()
     }
+
+    flowParticles.forEach((particle) => {
+      particle.update()
+      particle.draw()
+    })
+
+    for (let i = 0; i < ripples.length; i++) {
+      ripples[i].update()
+      ripples[i].draw()
+      if (ripples[i].radius >= ripples[i].maxRadius) {
+        ripples.splice(i, 1)
+        i--
+      }
+    }
+
+    requestAnimationFrame(animateWater)
   }
 
-  requestAnimationFrame(animateWater)
+  animateWater()
 }
 
-animateWater()
+// ============================================================================
+// SNAKE CANVAS (EL PACTO)
+// ============================================================================
 
-// Eclipse Toggle Functionality
-const eclipseToggle1 = document.getElementById("eclipseToggle1")
-const eclipseToggle2 = document.getElementById("eclipseToggle2")
-const eclipseText = document.getElementById("eclipseText")
-
-let eclipseVisible = false
-
-function toggleEclipseText() {
-  eclipseVisible = !eclipseVisible
-  if (eclipseVisible) {
-    eclipseText.classList.add("visible")
-  } else {
-    eclipseText.classList.remove("visible")
-  }
-}
-
-eclipseToggle1.addEventListener("click", toggleEclipseText)
-eclipseToggle2.addEventListener("click", toggleEclipseText)
-
-// Snake Canvas Animation for El Pacto Section
 const snakeCanvas = document.getElementById("snakeCanvas")
-const snakeCtx = snakeCanvas.getContext("2d")
-snakeCanvas.width = window.innerWidth
-snakeCanvas.height = window.innerHeight
+const snakeCtx = snakeCanvas ? snakeCanvas.getContext("2d") : null
+
+if (snakeCanvas && snakeCtx) {
+  snakeCanvas.width = window.innerWidth
+  snakeCanvas.height = window.innerHeight
+}
 
 class Snake {
   constructor(isMirror = false) {
@@ -426,7 +633,6 @@ class Snake {
     this.maxSegments = 30
     this.isMirror = isMirror
 
-    // Initialize snake in center
     const startX = snakeCanvas.width / 2
     const startY = snakeCanvas.height / 2
 
@@ -436,27 +642,24 @@ class Snake {
   }
 
   update(targetX, targetY) {
-    // Add new head position
     if (this.isMirror) {
-      // Mirror horizontally
       const mirrorX = snakeCanvas.width - targetX
       this.segments.unshift({ x: mirrorX, y: targetY })
     } else {
       this.segments.unshift({ x: targetX, y: targetY })
     }
 
-    // Remove tail if too long
     if (this.segments.length > this.maxSegments) {
       this.segments.pop()
     }
   }
 
   draw() {
-    // Get current theme color
+    if (!snakeCtx) return
+
     const style = getComputedStyle(document.documentElement)
     const accentColor = style.getPropertyValue("--accent-primary").trim() || "#d4af37"
 
-    // Draw snake body
     snakeCtx.beginPath()
     snakeCtx.moveTo(this.segments[0].x, this.segments[0].y)
 
@@ -470,20 +673,17 @@ class Snake {
     snakeCtx.lineJoin = "round"
     snakeCtx.stroke()
 
-    // Draw glow
     snakeCtx.shadowBlur = 20
     snakeCtx.shadowColor = this.isMirror ? "rgba(192, 192, 192, 0.6)" : accentColor
     snakeCtx.stroke()
     snakeCtx.shadowBlur = 0
 
-    // Draw snake head
     const head = this.segments[0]
     snakeCtx.beginPath()
     snakeCtx.arc(head.x, head.y, 10, 0, Math.PI * 2)
     snakeCtx.fillStyle = this.isMirror ? "#c0c0c0" : accentColor
     snakeCtx.fill()
 
-    // Draw eyes
     snakeCtx.fillStyle = "#000"
     snakeCtx.beginPath()
     snakeCtx.arc(head.x - 3, head.y - 3, 2, 0, Math.PI * 2)
@@ -492,121 +692,138 @@ class Snake {
   }
 }
 
-const mainSnake = new Snake(false)
-const mirrorSnake = new Snake(true)
+if (snakeCanvas && snakeCtx) {
+  const mainSnake = new Snake(false)
+  const mirrorSnake = new Snake(true)
 
-let mouseX = snakeCanvas.width / 2
-let mouseY = snakeCanvas.height / 2
+  let mouseX = snakeCanvas.width / 2
+  let mouseY = snakeCanvas.height / 2
 
-const pactoSection = document.querySelector(".pacto-section")
-let isOverPactoSection = false
+  const pactoSection = document.querySelector(".pacto-section")
+  let isOverPactoSection = false
 
-pactoSection.addEventListener("mouseenter", () => {
-  isOverPactoSection = true
-})
+  if (pactoSection) {
+    pactoSection.addEventListener("mouseenter", () => {
+      isOverPactoSection = true
+    })
 
-pactoSection.addEventListener("mouseleave", () => {
-  isOverPactoSection = false
-})
-
-document.addEventListener("mousemove", (e) => {
-  if (isOverPactoSection) {
-    mouseX = e.clientX
-    mouseY = e.clientY
+    pactoSection.addEventListener("mouseleave", () => {
+      isOverPactoSection = false
+    })
   }
-})
 
-function animateSnakes() {
-  snakeCtx.clearRect(0, 0, snakeCanvas.width, snakeCanvas.height)
-
-  // Update and draw both snakes
-  mainSnake.update(mouseX, mouseY)
-  mirrorSnake.update(mouseX, mouseY)
-
-  mainSnake.draw()
-  mirrorSnake.draw()
-
-  requestAnimationFrame(animateSnakes)
-}
-
-animateSnakes()
-
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
-  waterCanvas.width = window.innerWidth
-  waterCanvas.height = window.innerHeight
-  snakeCanvas.width = window.innerWidth
-  snakeCanvas.height = window.innerHeight
-})
-
-// Keyboard Navigation
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !infoPopup.classList.contains("hidden")) {
-    infoPopup.classList.add("hidden")
-  }
-})
-
-// Ambient Audio Management
-const ambientAudios = [
-  document.getElementById("ambientAudio1"),
-  document.getElementById("ambientAudio2"),
-  document.getElementById("ambientAudio3"),
-]
-
-const videoAudio = document.getElementById("videoAudio")
-
-let currentAmbientIndex = 0
-
-// Set all audio elements to loop
-ambientAudios.forEach((audio) => {
-  if (audio) {
-    audio.loop = true
-    audio.volume = 0.3
-  }
-})
-
-if (videoAudio) {
-  videoAudio.volume = 0.5
-}
-
-function playRandomAmbient() {
-  // Stop all ambient sounds
-  ambientAudios.forEach((audio) => {
-    if (audio) audio.pause()
+  document.addEventListener("mousemove", (e) => {
+    if (isOverPactoSection) {
+      mouseX = e.clientX
+      mouseY = e.clientY
+    }
   })
 
-  // Select random audio
-  currentAmbientIndex = Math.floor(Math.random() * ambientAudios.length)
-  const selectedAudio = ambientAudios[currentAmbientIndex]
+  function animateSnakes() {
+    snakeCtx.clearRect(0, 0, snakeCanvas.width, snakeCanvas.height)
 
-  if (selectedAudio && musicEnabled) {
-    selectedAudio.currentTime = 0
-    selectedAudio.play().catch((err) => console.log("[v0] Audio play error:", err))
+    mainSnake.update(mouseX, mouseY)
+    mirrorSnake.update(mouseX, mouseY)
+
+    mainSnake.draw()
+    mirrorSnake.draw()
+
+    requestAnimationFrame(animateSnakes)
+  }
+
+  animateSnakes()
+}
+
+// ============================================================================
+// RINGS CANVAS (CONCLUSION)
+// ============================================================================
+
+const ringsCanvas2 = document.getElementById("ringsCanvas")
+if (ringsCanvas2) {
+  const ringsCtx = ringsCanvas2.getContext("2d")
+  ringsCanvas2.width = ringsCanvas2.offsetWidth
+  ringsCanvas2.height = ringsCanvas2.offsetHeight
+
+  function drawRing(ctx, radius, dotCount) {
+    ctx.beginPath()
+    ctx.arc(0, 0, radius, 0, Math.PI * 2)
+    ctx.strokeStyle = "#000"
+    ctx.lineWidth = 12
+    ctx.stroke()
+
+    const angleStep = (Math.PI * 2) / dotCount
+    for (let i = 0; i < dotCount; i++) {
+      const angle = i * angleStep
+      const x = Math.cos(angle) * radius
+      const y = Math.sin(angle) * radius
+
+      ctx.beginPath()
+      ctx.arc(x, y, 8, 0, Math.PI * 2)
+      ctx.fillStyle = "#fff"
+      ctx.fill()
+    }
+  }
+
+  function drawRings() {
+    const centerX = ringsCanvas2.width / 2
+    const centerY = ringsCanvas2.height / 2
+    const time = Date.now() * 0.0005
+
+    ringsCtx.clearRect(0, 0, ringsCanvas2.width, ringsCanvas2.height)
+
+    ringsCtx.save()
+    ringsCtx.translate(centerX, centerY)
+    ringsCtx.rotate(time * 0.5)
+    drawRing(ringsCtx, 150, 12)
+    ringsCtx.restore()
+
+    ringsCtx.save()
+    ringsCtx.translate(centerX, centerY)
+    ringsCtx.rotate(-time * 0.6)
+    drawRing(ringsCtx, 80, 12)
+    ringsCtx.restore()
+
+    requestAnimationFrame(drawRings)
+  }
+
+  drawRings()
+
+  const conclusionText1 = document.getElementById("conclusionText1")
+  if (conclusionText1) {
+    conclusionText1.style.position = "absolute"
+    conclusionText1.style.top = "50%"
+    conclusionText1.style.left = "50%"
+    conclusionText1.style.transform = "translate(-50%, -50%)"
+    conclusionText1.style.zIndex = "20"
+    conclusionText1.style.maxWidth = "300px"
   }
 }
 
-// Play first ambient sound on user interaction
-document.addEventListener(
-  "click",
-  () => {
-    if (!musicEnabled) return
+// ============================================================================
+// WINDOW RESIZE HANDLER
+// ============================================================================
 
-    const hasPlayed = ambientAudios.some((audio) => audio && audio.played.length > 0)
-    if (!hasPlayed && ambientAudios[currentAmbientIndex]) {
-      ambientAudios[currentAmbientIndex].play().catch((err) => console.log("[v0] Audio play error:", err))
-    }
-  },
-  { once: true },
-)
+window.addEventListener("resize", () => {
+  if (canvas && ctx) {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+  }
+  if (waterCanvas && waterCtx) {
+    waterCanvas.width = window.innerWidth
+    waterCanvas.height = window.innerHeight
+  }
+  if (snakeCanvas && snakeCtx) {
+    snakeCanvas.width = window.innerWidth
+    snakeCanvas.height = window.innerHeight
+  }
+})
 
-ambientAudios.forEach((audio) => {
-  if (audio) {
-    audio.addEventListener("ended", () => {
-      if (musicEnabled) {
-        // Wait a moment then play random next audio
-        setTimeout(playRandomAmbient, 2000)
-      }
-    })
+// ============================================================================
+// KEYBOARD NAVIGATION
+// ============================================================================
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && infoPopup && !infoPopup.classList.contains("hidden")) {
+    infoPopup.classList.add("hidden")
   }
 })
