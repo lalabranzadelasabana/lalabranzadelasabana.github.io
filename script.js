@@ -134,47 +134,57 @@ audioButtons.forEach((btn) => {
   })
 })
 
-// Interactive 3D Orb
-const orb = document.getElementById("interactiveOrb")
+// Clickable Image Carousel
+const orbImage = document.getElementById("orbImage")
 const orbName = document.getElementById("orbName")
-let orbRotationX = 0
-let orbRotationY = 0
-let orbInteractions = 0
 
-orb.addEventListener("mousedown", (e) => {
-  const startX = e.clientX
-  const startY = e.clientY
+const sphereImages = [
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-rFGxbbGEF8MNfjPQ27yGufJJ49oQEv.png",
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2-9vd99WZvSQwJicf7X3PRF1kfC4HjEB.png",
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3-PTSTl1NulzXA3wggRiyqR6g7i6I7hc.png",
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4-RoEhFCVYUmKTYXvOc7Vv8RNKjSsVDo.png",
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/5-W3O6yXelTljE7KSQ4vDjIRXXjHPBIP.png",
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/6-lArN6ILr2kN8BjdCOoXkqHha1v54Nj.png",
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/7-n8LpaIJOPHMfkDMB7Q9YJIQNnweC4A.png",
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/8-gSHNgUbgBC4kUj2svFGyb9PdcNB2BG.png",
+]
 
-  function onMouseMove(e) {
-    const deltaX = e.clientX - startX
-    const deltaY = e.clientY - startY
+let currentImageIndex = 0
 
-    orbRotationY += deltaX * 0.5
-    orbRotationX -= deltaY * 0.5
+orbImage.addEventListener("click", () => {
+  currentImageIndex = (currentImageIndex + 1) % sphereImages.length
+  orbImage.src = sphereImages[currentImageIndex]
 
-    orb.style.transform = `rotateX(${orbRotationX}deg) rotateY(${orbRotationY}deg)`
-
-    orbInteractions++
-
-    if (orbInteractions > 20 && orbName.classList.contains("hidden")) {
-      orbName.classList.remove("hidden")
-      orbName.classList.add("visible")
-    }
+  // Show name after first click
+  if (currentImageIndex > 0 && orbName.classList.contains("hidden")) {
+    orbName.classList.remove("hidden")
+    orbName.classList.add("visible")
   }
-
-  function onMouseUp() {
-    document.removeEventListener("mousemove", onMouseMove)
-    document.removeEventListener("mouseup", onMouseUp)
-  }
-
-  document.addEventListener("mousemove", onMouseMove)
-  document.addEventListener("mouseup", onMouseUp)
 })
 
 // Earth Info Button
 const earthInfoBtn = document.getElementById("earthInfoBtn")
 const earthInfo = document.getElementById("earthInfo")
 const earthImg = document.querySelector(".earth-img")
+const earthImage = document.getElementById("earthImage")
+
+const lastScrollY = 0
+const earthContainer = document.querySelector(".earth-container")
+
+window.addEventListener("scroll", () => {
+  const earthRect = earthContainer.getBoundingClientRect()
+  const earthCenterY = earthRect.top + earthRect.height / 2
+  const windowCenterY = window.innerHeight / 2
+
+  // Calculate rotation based on scroll position (0 to 360 degrees)
+  const scrollProgress = (window.scrollY % 3000) / 3000 // Completes rotation every 3000px scroll
+  const rotationDegree = scrollProgress * 360
+
+  // Apply rotation when image is in viewport
+  if (earthRect.top < window.innerHeight && earthRect.bottom > 0) {
+    earthImage.style.transform = `rotateZ(${rotationDegree}deg)`
+  }
+})
 
 earthInfoBtn.addEventListener("click", () => {
   earthInfo.classList.toggle("visible")

@@ -1,0 +1,139 @@
+@font-face {
+  font-family: "Rimba Andalas";
+  src: url("fonts/rimba-andalas.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Pangolin";
+  src: url("fonts/pangolin-regular.ttf") format("truetype");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Pangolin", sans-serif;
+  overflow: hidden;
+}
+
+.landing-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.landing-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 600px;
+  padding: 40px;
+}
+
+.landing-title {
+  font-family: "Rimba Andalas", serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: #000;
+  text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
+  margin-bottom: 10px;
+}
+
+.landing-subtitle {
+  font-family: "Pangolin", sans-serif;
+  font-size: 1.3rem;
+  color: #333;
+  line-height: 1.6;
+  text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.7);
+}
+
+.iniciar-button {
+  margin-top: 30px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: #ffc84d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #000;
+  font-size: 1.8rem;
+  font-family: "Pangolin", sans-serif;
+  font-weight: bold;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.iniciar-button:hover {
+  background-color: #ffd966;
+  transform: scale(1.05);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.iniciar-button:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .landing-title {
+    font-size: 2.5rem;
+  }
+
+  .landing-subtitle {
+    font-size: 1rem;
+  }
+
+  .iniciar-button {
+    width: 150px;
+    height: 150px;
+    font-size: 1.3rem;
+  }
+
+  .landing-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-title {
+    font-size: 2rem;
+  }
+
+  .landing-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .iniciar-button {
+    width: 120px;
+    height: 120px;
+    font-size: 1rem;
+  }
+}
