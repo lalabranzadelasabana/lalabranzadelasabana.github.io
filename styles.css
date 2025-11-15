@@ -72,6 +72,16 @@ body.gradient-light-to-dark {
   z-index: 9999;
 }
 
+/* Fix snakeCanvas positioning and styling to make it visible */
+#snakeCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
 /* Navigation Progress Bar */
 .nav-progress {
   position: fixed;
@@ -276,6 +286,43 @@ main {
   z-index: 1;
 }
 
+/* Intro section styling with video background */
+.intro-section {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.intro-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.intro-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+  max-width: 900px;
+  padding: 0 40px;
+}
+
+.intro-section .main-title,
+.intro-section .intro-text {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95),
+    0 0 30px rgba(0, 0, 0, 0.8);
+}
+
 .section {
   min-height: 100vh;
   display: flex;
@@ -456,6 +503,11 @@ h2.section-title,
   gap: 40px;
 }
 
+/* Remove orbName styling */
+.orb-name {
+  display: none;
+}
+
 /* Orb tamaño “doble” en escritorio */
 .carousel-image {
   width: 400px;
@@ -466,10 +518,13 @@ h2.section-title,
     0 0 80px rgba(var(--accent-primary-rgb), 0.4);
   transition: all 0.5s ease;
   user-select: none;
+  cursor: pointer;
 }
 
 .carousel-image:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 50px rgba(var(--accent-primary-rgb), 1),
+    0 0 100px rgba(var(--accent-primary-rgb), 0.6);
 }
 
 /* Tablets: un poco más pequeño para que quepa cómodo */
@@ -649,17 +704,19 @@ h2.section-title,
   gap: 20px;
 }
 
+/* Update birds info box styling for better readability */
 .birds-info-box {
-  background: rgba(0, 0, 0, 0.85);
-  padding: 25px;
+  background: rgba(0, 0, 0, 0.95);
+  padding: 40px;
   border-radius: 15px;
-  border-left: 4px solid var(--accent-primary);
-  backdrop-filter: blur(10px);
-  max-height: 300px;
+  border: 2px solid var(--accent-primary);
+  max-width: 500px;
+  max-height: 400px;
   overflow-y: auto;
   transition: all 0.3s ease;
   opacity: 0;
   pointer-events: none;
+  box-shadow: 0 0 40px rgba(var(--accent-primary-rgb), 0.6);
 }
 
 .birds-info-box.visible {
@@ -667,17 +724,43 @@ h2.section-title,
   pointer-events: all;
 }
 
+/* Center condor image and remove shadows */
+.condor-img {
+  width: 50%;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  border-radius: 15px;
+  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.3));
+}
+
 #birdsInfoBtn {
   align-self: flex-start;
 }
 
+/* Generic info-box styling for all info boxes */
 .info-box {
-  background: rgba(0, 0, 0, 0.85);
-  padding: 30px;
+  background: rgba(0, 0, 0, 0.95);
+  padding: 40px;
   border-radius: 15px;
-  border-left: 4px solid var(--accent-primary);
-  margin: 40px 0;
-  backdrop-filter: blur(10px);
+  border: 2px solid var(--accent-primary);
+  max-width: 500px;
+  max-height: 400px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 0 40px rgba(var(--accent-primary-rgb), 0.6);
+}
+
+.info-box.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.info-box.hidden {
+  display: block;
 }
 
 /* Celestial Section */
@@ -888,176 +971,6 @@ h2.section-title,
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s ease;
-  box-shadow: 0 0 40px rgba(var(--accent-primary-rgb), 0.6);
-  z-index: 100;
-}
-
-.bochica-info-box.visible {
-  opacity: 1;
-  pointer-events: all;
-}
-
-#bochicaInfoBtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 50;
-}
-
-/* Conclusion Section */
-.conclusion-content {
-  text-align: center;
-}
-
-.conclusion-content img {
-  margin: 40px 0;
-}
-
-/* Concentric rings for conclusion section */
-.concentric-rings {
-  position: relative;
-  width: 100%;
-  height: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 60px 0;
-}
-
-#ringsCanvas {
-  width: 100%;
-  height: 100%;
-  max-width: 800px;
-}
-
-/* Adjusted conclusion content to work with rings */
-.conclusion-content {
-  text-align: center;
-}
-
-.conclusion-content #conclusionText1 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 20;
-  max-width: 350px;
-  margin-top: 0;
-}
-
-.conclusion-content #conclusionText2 {
-  margin-top: 80px;
-}
-
-/* Footer */
-.footer {
-  background: rgba(0, 0, 0, 0.9);
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.footer-content {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.footer-info {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid var(--accent-primary);
-  color: var(--accent-primary);
-}
-
-/* Scroll Animations */
-.fade-in-scroll {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 1s ease;
-}
-
-.fade-in-scroll.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Eclipse Toggle Buttons */
-.eclipse-toggle-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 40px 0 20px 0;
-  padding: 0 10%;
-}
-
-.eclipse-toggle-btn {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 3px solid var(--accent-primary);
-  background: rgba(0, 0, 0, 0.7);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.eclipse-toggle-btn.left {
-  margin-right: auto;
-}
-
-.eclipse-toggle-btn.right {
-  margin-left: auto;
-}
-
-.eclipse-toggle-btn:hover {
-  background: var(--accent-primary);
-  transform: scale(1.1);
-  box-shadow: 0 0 30px rgba(var(--accent-primary-rgb), 0.8);
-}
-
-.toggle-dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--accent-primary);
-  box-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.6);
-}
-
-.eclipse-text {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: all 0.5s ease;
-  margin: 20px 0;
-}
-
-.eclipse-text.visible {
-  opacity: 1;
-  max-height: 200px;
-}
-
-/* Emergence Container */
-.emergence-container {
-  margin: 60px 0 40px 0;
-}
-
-.emergence-text {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 30px;
-  border-radius: 15px;
-  border: 2px solid var(--accent-primary);
-  box-shadow: 0 0 30px rgba(var(--accent-primary-rgb), 0.4);
-}
-
-/* Simplified Bachué Content */
-.bachue-content-simple {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 40px;
-  align-items: center;
-  margin: 40px 0;
 }
 
 /* Snake Separator */
@@ -1085,8 +998,7 @@ h2.section-title,
   stroke-width: 50;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 15px rgba(34, 139, 34, 0.6))
-    drop-shadow(0 0 25px rgba(50, 205, 50, 0.3));
+  filter: drop-shadow(0 0 15px rgba(34, 139, 34, 0.6)) drop-shadow(0 0 25px rgba(50, 205, 50, 0.3));
   animation: snakeWave 4s ease-in-out infinite;
 }
 
@@ -1109,25 +1021,10 @@ h2.section-title,
   }
 }
 
-/* El Pacto Section */
-.pacto-section {
-  min-height: 100vh;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
-}
 
-#snakeCanvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+.pacto-section {
+  background: linear-gradient(to bottom, #1a1a2e, #16213e);
+  position: relative;
 }
 
 .pacto-content {
@@ -1135,127 +1032,64 @@ h2.section-title,
   z-index: 2;
   max-width: 900px;
   padding: 40px;
+  margin: 0 auto;
 }
 
 .pacto-text {
-  background: rgba(0, 0, 0, 0.85);
-  padding: 60px;
-  border-radius: 20px;
-  border: 2px solid var(--accent-primary);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 50px rgba(var(--accent-primary-rgb), 0.6);
+  font-size: 26px;
+  font-weight: 600;
   color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9),
-    0 0 20px rgba(0, 0, 0, 0.7);
 }
 
-/* El Regalo Section */
-.regalo-section {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
+/* Complete footer styling */
+.footer {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  border-top: 2px solid var(--accent-primary);
+  padding: 60px 20px 40px;
+  margin-top: 40px;
 }
 
-.regalo-content {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 60px;
-  align-items: center;
-  margin: 40px 0;
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
 }
 
-.corn-image-large {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.footer-content .small-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #c0c0c0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  margin-bottom: 20px;
 }
 
-.corn-img-large {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-  border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(var(--accent-primary-rgb), 0.5);
+.gradient-light-to-dark .footer-content .small-text {
+  color: #b4b4b4;
 }
 
-/* Video background for intro section */
-.intro-section {
-  position: relative;
-  overflow: hidden;
+.footer-info {
+  border-top: 1px solid rgba(var(--accent-primary-rgb), 0.3);
+  padding-top: 20px;
+  margin-top: 30px;
 }
 
-.intro-section video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-  opacity: 0.5;
+.footer-info p {
+  font-size: 13px;
+  color: #999;
+  margin: 5px 0;
 }
 
-.intro-section .content-wrapper {
-  position: relative;
-  z-index: 2;
-}
-
-/* Responsive Design */
+/* Responsive footer for mobile */
 @media (max-width: 768px) {
-  .main-title {
-    font-size: 60px;
+  .footer {
+    padding: 40px 20px 30px;
   }
 
-  .section-title {
-    font-size: 32px;
+  .footer-content .small-text {
+    font-size: 13px;
   }
 
-  .celestial-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .bochica-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .bachue-content-simple,
-  .regalo-content {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .nav-progress {
-    padding: 10px 20px;
-  }
-
-  .nav-dots {
-    gap: 10px;
-  }
-
-  .nav-dot {
-    width: 10px;
-    height: 10px;
-  }
-
-  .carousel-image {
-    width: 150px;
-    height: 150px;
-  }
-
-  .image-carousel {
-    margin: 40px 0;
-  }
-
-  .chiminigagua-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .birds-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .orb-container-large {
-    scale: 1.5;
+  .footer-info p {
+    font-size: 12px;
   }
 }

@@ -279,7 +279,6 @@ audioButtons.forEach((btn) => {
 // ============================================================================
 
 const orbImage = document.getElementById("orbImage")
-const orbName = document.getElementById("orbName")
 
 const sphereImages = [
   "./public/images/1.png",
@@ -299,19 +298,37 @@ if (orbImage) {
     currentImageIndex = (currentImageIndex + 1) % sphereImages.length
     orbImage.src = sphereImages[currentImageIndex]
 
-    // Trigger fireworks on last image
     if (currentImageIndex === sphereImages.length - 1 && ctx && canvas) {
       const rect = orbImage.getBoundingClientRect()
       const x = rect.left + rect.width / 2
       const y = rect.top + rect.height / 2
-      for (let i = 0; i < 5; i++) {
-        fireworks.push(new Firework(x, y))
+      
+      // Create larger white flash effect
+      for (let i = 0; i < 8; i++) {
+        const flashFirework = new Firework(x, y)
+        flashFirework.particles.forEach(p => {
+          p.color = `hsl(0, 0%, ${Math.random() * 30 + 70}%)`
+        })
+        fireworks.push(flashFirework)
       }
-    }
 
-    if (currentImageIndex > 0 && orbName?.classList.contains("hidden")) {
-      orbName.classList.remove("hidden")
-      orbName.classList.add("visible")
+      // Add white background flash
+      const flashOverlay = document.createElement('div')
+      flashOverlay.style.position = 'fixed'
+      flashOverlay.style.top = '0'
+      flashOverlay.style.left = '0'
+      flashOverlay.style.width = '100%'
+      flashOverlay.style.height = '100%'
+      flashOverlay.style.background = 'rgba(255, 255, 255, 0.8)'
+      flashOverlay.style.zIndex = '10000'
+      flashOverlay.style.pointerEvents = 'none'
+      document.body.appendChild(flashOverlay)
+
+      setTimeout(() => {
+        flashOverlay.style.transition = 'opacity 1.5s ease-out'
+        flashOverlay.style.opacity = '0'
+        setTimeout(() => flashOverlay.remove(), 1500)
+      }, 50)
     }
   })
 }
@@ -374,27 +391,27 @@ if (earthInfoBtn) {
 const birdsInfoBtn = document.getElementById("birdsInfoBtn")
 const birdsInfo = document.getElementById("birdsInfo")
 
-if (birdsInfoBtn) {
+if (birdsInfoBtn && birdsInfo) {
   birdsInfoBtn.addEventListener("click", () => {
-    birdsInfo?.classList.toggle("visible")
+    birdsInfo.classList.toggle("visible")
   })
 }
 
 const bachueInfoBtn = document.getElementById("bachueInfoBtn")
 const bachueInfo = document.getElementById("bachueInfo")
 
-if (bachueInfoBtn) {
+if (bachueInfoBtn && bachueInfo) {
   bachueInfoBtn.addEventListener("click", () => {
-    bachueInfo?.classList.toggle("visible")
+    bachueInfo.classList.toggle("visible")
   })
 }
 
 const bochicaInfoBtn = document.getElementById("bochicaInfoBtn")
 const bochicaInfo = document.getElementById("bochicaInfo")
 
-if (bochicaInfoBtn) {
+if (bochicaInfoBtn && bochicaInfo) {
   bochicaInfoBtn.addEventListener("click", () => {
-    bochicaInfo?.classList.toggle("visible")
+    bochicaInfo.classList.toggle("visible")
   })
 }
 
@@ -508,13 +525,13 @@ class Ripple {
 
     waterCtx.beginPath()
     waterCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
-    waterCtx.strokeStyle = `rgba(100, 200, 255, ${this.opacity * 0.3})`
+    waterCtx.strokeStyle = `rgba(2, 88, 164, ${this.opacity * 0.3})`
     waterCtx.lineWidth = 1.5
     waterCtx.stroke()
 
     waterCtx.beginPath()
     waterCtx.arc(this.x, this.y, this.radius * 0.7, 0, Math.PI * 2)
-    waterCtx.strokeStyle = `rgba(150, 220, 255, ${this.opacity * 0.15})`
+    waterCtx.strokeStyle = `rgba(4, 70, 145, ${this.opacity * 0.15})`
     waterCtx.lineWidth = 1
     waterCtx.stroke()
   }

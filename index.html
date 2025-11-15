@@ -71,12 +71,12 @@
     <main>
         <!-- Section 1: Darkness -->
         <section class="section intro-section fade-in-scroll" data-section="0">
-            <!-- Added loop attribute to video -->
-            <video autoplay muted playsinline loop>
+            <!-- Video as background, content wrapper positioned absolutely on top -->
+            <video autoplay muted playsinline loop class="intro-video">
                 <source src="./video/Fondo.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <div class="content-wrapper">
+            <div class="content-wrapper intro-content">
                 <h1 class="main-title">Cosmogonía Muisca</h1>
                 <p class="intro-text">
                     Hubo un tiempo en el que no existía nada. Ni montañas, ni lagunas, ni soles ni lunas. 
@@ -101,10 +101,7 @@
                         <div class="image-carousel">
                             <img id="orbImage" src="./public/images/1.png" alt="Chiminigagua's sphere" class="carousel-image">
                         </div>
-                        <div id="orbName" class="orb-name hidden">
-                            <h2>Chiminigagua</h2>
-                            <p class="subtitle">La luz de la luz</p>
-                        </div>
+                        <!-- Removed orbName element -->
                     </div>
 
                     <p class="narrative-text centered">
@@ -119,7 +116,8 @@
             <div class="content-wrapper birds-layout">
                 <div class="birds-image-container">
                     <button id="birdsInfoBtn" class="info-btn">?</button>
-                    <div id="birdsInfo" class="birds-info-box">
+                    <!-- Added birdsInfo box with proper styling -->
+                    <div id="birdsInfo" class="info-box hidden">
                         <p class="small-text">
                             Las crónicas coloniales como la de fray Pedro Simón en el siglo XVI, narran que 
                             Chiminigagua liberó dos grandes aves negras que exhalaban luz por sus picos, iluminando el cosmos. 
@@ -135,7 +133,7 @@
                 </div>
                 <div class="birds-image fade-in-scroll">
                     <img src="./public/condor.png" 
-                         alt="Aves negras" class="full-width-img">
+                         alt="Aves negras" class="condor-img">
                 </div>
                 <p class="narrative-text centered">
                     Fue así como la oscuridad empezó a agrietarse, dejando escapar destellos dorados. 
@@ -248,7 +246,8 @@
                         <img src="/placeholder.svg?height=500&width=400" 
                              alt="Bachué" class="portrait-img-centered">
                         <button id="bachueInfoBtn" class="info-btn">?</button>
-                        <div id="bachueInfo" class="bachue-info-box">
+                        <!-- Added bachueInfo box with proper styling and class -->
+                        <div id="bachueInfo" class="info-box hidden">
                             <p class="small-text">
                                 Caminó por las orillas y enseñó a sus descendientes a vivir en comunidad, a sembrar, 
                                 a respetar la naturaleza y a reconocer en cada elemento un espíritu sagrado.
@@ -622,7 +621,8 @@
                         <img src="/placeholder.svg?height=500&width=400" 
                              alt="Bochica" class="portrait-img-centered">
                         <button id="bochicaInfoBtn" class="info-btn">?</button>
-                        <div id="bochicaInfo" class="bochica-info-box">
+                        <!-- Added bochicaInfo box with proper styling and class -->
+                        <div id="bochicaInfo" class="info-box hidden">
                             <p class="small-text">
                                 En medio de aquel caos, apareció Bochica, el sabio venido del oriente. 
                                 Con su bastón abrió la roca y dejó caer la gran cascada de Tequendama, 
@@ -658,31 +658,6 @@
             </div>
         </section>
 
-        <!-- New Section: El Regalo (moved content from Bachué) -->
-        <section class="section regalo-section fade-in-scroll" data-section="8">
-            <div class="content-wrapper">
-                <h2 class="section-title">El Regalo</h2>
-                
-                <div class="regalo-content">
-                    <div class="corn-image-large">
-                        <img src="/placeholder.svg?height=400&width=400" 
-                             alt="Maíz sagrado" class="corn-img-large">
-                    </div>
-                    <div class="regalo-text">
-                        <p class="narrative-text">
-                            Entre sus dones, entregó uno que selló para siempre el destino de los muiscas: el maíz. 
-                            Cuentan que transformó el oro en mazorcas, para que el pueblo supiera que la verdadera 
-                            riqueza no estaba en el metal brillante, sino en el alimento que sostiene la vida.
-                        </p>
-                        <p class="narrative-text">
-                            Ese regalo unió lo sagrado y lo cotidiano, lo divino y lo humano, 
-                            y marcó la diferencia entre la abundancia y la escasez.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Section 8: Conclusion -->
         <section class="section conclusion-section fade-in-scroll" data-section="9">
             <div class="content-wrapper">
@@ -710,7 +685,7 @@
             <div class="footer-content">
                 <p class="small-text">
                     Esta página web ha sido creada a partir de la investigación sobre la cosmogonía muisca, 
-                    consultando principalmente fuentes oficiales y crónicas españolas que registraron estos relatos 
+                    consultando principalmente fuentes oficiales y crónicas españolas que registrarón estos relatos 
                     durante la Colonia. Sin embargo, la memoria viva de esta tradición no pertenece a los libros, 
                     sino a las comunidades indígenas actuales, quienes continúan transmitiendo y resignificando 
                     su herencia cultural.
