@@ -758,47 +758,36 @@ if (snakeCanvas && snakeCtx) {
 const ringsCanvas2 = document.getElementById("ringsCanvas")
 if (ringsCanvas2) {
   const ringsCtx = ringsCanvas2.getContext("2d")
-  ringsCanvas2.width = ringsCanvas2.offsetWidth
-  ringsCanvas2.height = ringsCanvas2.offsetHeight
+  
+  ringsCanvas2.width = Math.min(900, window.innerWidth - 40)
+  ringsCanvas2.height = 700
 
-  function drawRing(ctx, radius, dotCount) {
+  function drawRing(ctx, radius, dotCount, rotation) {
+    ctx.save()
+    ctx.translate(ringsCanvas2.width / 2, ringsCanvas2.height / 2)
+    ctx.rotate(rotation)
+    
     ctx.beginPath()
     ctx.arc(0, 0, radius, 0, Math.PI * 2)
-    ctx.strokeStyle = "#000"
-    ctx.lineWidth = 12
+    ctx.strokeStyle = "#000000"
+    ctx.lineWidth = 30
     ctx.stroke()
 
-    const angleStep = (Math.PI * 2) / dotCount
-    for (let i = 0; i < dotCount; i++) {
-      const angle = i * angleStep
-      const x = Math.cos(angle) * radius
-      const y = Math.sin(angle) * radius
-
-      ctx.beginPath()
-      ctx.arc(x, y, 8, 0, Math.PI * 2)
-      ctx.fillStyle = "#fff"
-      ctx.fill()
-    }
+    ctx.restore()
   }
 
   function drawRings() {
     const centerX = ringsCanvas2.width / 2
     const centerY = ringsCanvas2.height / 2
-    const time = Date.now() * 0.0005
+    const time = Date.now() * 0.0003
 
     ringsCtx.clearRect(0, 0, ringsCanvas2.width, ringsCanvas2.height)
 
-    ringsCtx.save()
-    ringsCtx.translate(centerX, centerY)
-    ringsCtx.rotate(time * 0.5)
-    drawRing(ringsCtx, 150, 12)
-    ringsCtx.restore()
-
-    ringsCtx.save()
-    ringsCtx.translate(centerX, centerY)
-    ringsCtx.rotate(-time * 0.6)
-    drawRing(ringsCtx, 80, 12)
-    ringsCtx.restore()
+    // First ring rotates clockwise (to the right)
+    drawRing(ringsCtx, 250, 12, time)
+    
+    // Second ring rotates counter-clockwise (to the left)
+    drawRing(ringsCtx, 150, 12, -time * 1.2)
 
     requestAnimationFrame(drawRings)
   }
@@ -807,13 +796,17 @@ if (ringsCanvas2) {
 
   const conclusionText1 = document.getElementById("conclusionText1")
   if (conclusionText1) {
-    conclusionText1.style.position = "absolute"
-    conclusionText1.style.top = "50%"
-    conclusionText1.style.left = "50%"
-    conclusionText1.style.transform = "translate(-50%, -50%)"
+    conclusionText1.style.position = "relative"
     conclusionText1.style.zIndex = "20"
-    conclusionText1.style.maxWidth = "300px"
   }
+
+  // Handle window resize to adjust canvas size
+  const resizeRingsCanvas = () => {
+    ringsCanvas2.width = Math.min(900, window.innerWidth - 40)
+    ringsCanvas2.height = 700
+  }
+
+  window.addEventListener("resize", resizeRingsCanvas)
 }
 
 // ============================================================================
