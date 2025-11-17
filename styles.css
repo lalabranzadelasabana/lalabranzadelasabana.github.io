@@ -54,7 +54,7 @@ body {
 
 /* Gradient Themes */
 body.gradient-dark-to-light {
-  background: linear-gradient(to bottom, #180300 0%, #1a1a1a 100%);
+  background: linear-gradient(to bottom, #0e0200 0%, #1a1a1a 100%);
 }
 
 body.gradient-light-to-dark {
@@ -1114,10 +1114,10 @@ h2.section-title,
 
 @keyframes rotateClockwise {
   from {
-    transform: rotate(0deg);
+    transform: rotate(360deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(0deg);
   }
 }
 
