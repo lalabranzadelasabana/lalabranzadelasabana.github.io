@@ -54,7 +54,7 @@ body {
 
 /* Gradient Themes */
 body.gradient-dark-to-light {
-  background: linear-gradient(to bottom, #000000 0%, #bebebe 100%);
+  background: linear-gradient(to bottom, #180300 0%, #1a1a1a 100%);
 }
 
 body.gradient-light-to-dark {
@@ -292,6 +292,9 @@ main {
   overflow: hidden;
   padding: 0;
   min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .intro-video {
@@ -306,10 +309,10 @@ main {
 }
 
 .intro-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+		   
+			
+								   
   z-index: 2;
   text-align: center;
   width: 100%;
@@ -344,7 +347,7 @@ main {
   font-family: "Rimba Andalas", serif;
   font-size: 110px;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   color: var(--accent-primary);
   text-shadow: 0 0 20px rgba(var(--accent-primary-rgb), 0.8),
     0 2px 8px rgba(0, 0, 0, 0.9);
@@ -356,7 +359,7 @@ main {
   font-family: "Rimba Andalas", serif;
   font-size: 48px;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   color: var(--accent-primary);
   text-shadow: 0 0 20px rgba(var(--accent-primary-rgb), 0.6),
     0 2px 8px rgba(0, 0, 0, 0.9);
@@ -410,7 +413,7 @@ h2.section-title,
   font-size: 24px;
   text-align: center;
   line-height: 1.8;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   color: #ffffff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9),
     0 0 20px rgba(0, 0, 0, 0.7);
@@ -437,6 +440,7 @@ h2.section-title,
   font-size: 18px;
   font-style: italic;
   color: var(--accent-secondary);
+  text-align: center;
 }
 
 /* Audio Button */
@@ -485,14 +489,13 @@ h2.section-title,
 }
 
 /* 3D Orb */
-/* 3D Orb */
 .orb-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 30px;
-  scale: 1.5;
+  scale: 2;
   /* Más aire vertical para que el orb no se coma el texto */
   margin: 120px auto 160px;
   min-height: 500px; /* espacio reservado para el orb gigante */
@@ -510,8 +513,8 @@ h2.section-title,
 
 /* Orb tamaño "doble" en escritorio */
 .carousel-image {
-  width: 400px;
-  height: 400px;
+  width: 450px;
+  height: 450px;
   border-radius: 50%;
   box-shadow:
     0 0 40px rgba(var(--accent-primary-rgb), 0.8),
@@ -571,7 +574,7 @@ h2.section-title,
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  box-shadow: 0 0 40px rgba(var(--accent-primary-rgb), 0.8),
+  box-shadow: inset 0 0 40px rgba(var(--accent-primary-rgb), 0.4),
     0 0 80px rgba(var(--accent-primary-rgb), 0.4);
   transition: all 0.5s ease;
   user-select: none;
@@ -579,7 +582,7 @@ h2.section-title,
 
 .carousel-image:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 50px rgba(var(--accent-primary-rgb), 1),
+  box-shadow: inset 0 0 50px rgba(var(--accent-primary-rgb), 0.4),
     0 0 100px rgba(var(--accent-primary-rgb), 0.6);
 }
 
@@ -747,7 +750,7 @@ h2.section-title,
   padding: 40px;
   border-radius: 15px;
   border: 2px solid var(--accent-primary);
-  max-width: 500px;
+  max-width: 800px;
   max-height: 400px;
   overflow-y: auto;
   transition: all 0.3s ease;
@@ -763,8 +766,8 @@ h2.section-title,
 
 /* Center condor image and remove shadows */
 .condor-img {
-  width: 50%;
-  max-width: 300px;
+  width: 80%;
+  max-width: 400px;
   height: auto;
   margin: 0 auto;
   display: block;
@@ -816,6 +819,7 @@ h2.section-title,
   backdrop-filter: blur(10px);
   border: 2px solid transparent;
   transition: all 0.3s ease;
+  color: #808080;
 }
 
 .celestial-card:hover {
@@ -858,6 +862,43 @@ h2.section-title,
 }
 
 /* Bachué Section */
+.bachue-section {
+  padding: 60px 20px;
+}
+/* Bachué Section - Updated Layout */
+.bachue-display-new {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: flex-start;
+}
+
+.bachue-image-large {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.portrait-img-large {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+}
+
+.bachue-info-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 20px;
+}
+
+.bachue-text {
+  grid-column: 1 / -1;
+  margin-top: 30px;
+  text-align: center;
+}
+								  
 .bachue-content {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -870,7 +911,7 @@ h2.section-title,
 .bachue-display {
   display: flex;
   justify-content: center;
-  margin: 40px 0;
+  margin: 30px 0;
 }
 
 .bachue-image-container {
@@ -882,8 +923,11 @@ h2.section-title,
   width: 100%;
   max-width: 400px;
   height: auto;
-  border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.bachue-text {
+  margin-top: 30px;
+  text-align: center;
 }
 
 .bachue-info-box {
@@ -909,10 +953,11 @@ h2.section-title,
 }
 
 #bachueInfoBtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 50;
+  align-self: flex-start;
+  position: relative;
+  top: 0;
+  right: auto;
+
 }
 
 .portrait-img {
@@ -1022,62 +1067,91 @@ h2.section-title,
   z-index: 50;
 }
 
-/* Conclusion Section */
+/* Conclusion Section with Rotating Ring Image */
 .conclusion-section {
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.conclusion-content {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 80px 20px;
-}
-
-.conclusion-content {
-  text-align: center;
-  position: relative;
-}
-
-.conclusion-content img {
-  margin: 40px 0;
-}
-
-/* Concentric rings for conclusion section */
-.concentric-rings {
-  position: relative;
   width: 100%;
-  height: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 60px 0;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-#ringsCanvas {
+/* Updated to match HTML structure with conclusion-text-1 ID */
+#conclusionText1 {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 22px;
+  line-height: 1.8;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  margin-bottom: 10px;
+  max-width: 600px;
+}
+
+/* Added styles for rings-image-container and rings-image to rotate continuously */
+.rings-image-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 600px;
+  height: 600px;
+}
+
+@keyframes rotateClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rings-image {
   width: 100%;
   height: 100%;
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
-  background: transparent;
+  animation: rotateClockwise 20s linear infinite;
+  object-fit: contain;
 }
 
-/* Ajuste de textos de conclusión para convivir con los anillos */
-.conclusion-content #conclusionText1 {
-  z-index: 20;
-  max-width: 350px;
-  margin: 40px auto 20px auto;
-}
-
-.conclusion-content #conclusionText2 {
-  margin-top: 40px;
+/* Updated to match HTML structure with conclusion-text-2 ID */
+#conclusionText2 {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 20px;
+  line-height: 1.8;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  max-width: 700px;
 }
 
 /* Footer */
-.footer {
+footer {
+  border-top: 3px solid #808080;
   background: rgba(0, 0, 0, 0.9);
-  padding: 60px 20px;
+  padding: 40px 20px;
   text-align: center;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+footer p {
+  margin-bottom: 10px;
 }
 
 .footer-content {
@@ -1205,12 +1279,12 @@ h2.section-title,
 
 .snake-path {
   fill: url(#snakeScales);
-  stroke: #0d2818;
+  stroke: #0070A8;
   stroke-width: 50;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 15px rgba(34, 139, 34, 0.6))
-    drop-shadow(0 0 25px rgba(50, 205, 50, 0.3));
+  filter: drop-shadow(0 0 15px #0fafff91)
+    drop-shadow(0 0 25px #1289c59f);
   animation: snakeWave 4s ease-in-out infinite;
 }
 

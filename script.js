@@ -752,64 +752,6 @@ if (snakeCanvas && snakeCtx) {
 }
 
 // ============================================================================
-// RINGS CANVAS (CONCLUSION)
-// ============================================================================
-
-const ringsCanvas2 = document.getElementById("ringsCanvas")
-if (ringsCanvas2) {
-  const ringsCtx = ringsCanvas2.getContext("2d")
-  
-  ringsCanvas2.width = Math.min(900, window.innerWidth - 40)
-  ringsCanvas2.height = 700
-
-  function drawRing(ctx, radius, dotCount, rotation) {
-    ctx.save()
-    ctx.translate(ringsCanvas2.width / 2, ringsCanvas2.height / 2)
-    ctx.rotate(rotation)
-    
-    ctx.beginPath()
-    ctx.arc(0, 0, radius, 0, Math.PI * 2)
-    ctx.strokeStyle = "#000000"
-    ctx.lineWidth = 30
-    ctx.stroke()
-
-    ctx.restore()
-  }
-
-  function drawRings() {
-    const centerX = ringsCanvas2.width / 2
-    const centerY = ringsCanvas2.height / 2
-    const time = Date.now() * 0.0003
-
-    ringsCtx.clearRect(0, 0, ringsCanvas2.width, ringsCanvas2.height)
-
-    // First ring rotates clockwise (to the right)
-    drawRing(ringsCtx, 250, 12, time)
-    
-    // Second ring rotates counter-clockwise (to the left)
-    drawRing(ringsCtx, 150, 12, -time * 1.2)
-
-    requestAnimationFrame(drawRings)
-  }
-
-  drawRings()
-
-  const conclusionText1 = document.getElementById("conclusionText1")
-  if (conclusionText1) {
-    conclusionText1.style.position = "relative"
-    conclusionText1.style.zIndex = "20"
-  }
-
-  // Handle window resize to adjust canvas size
-  const resizeRingsCanvas = () => {
-    ringsCanvas2.width = Math.min(900, window.innerWidth - 40)
-    ringsCanvas2.height = 700
-  }
-
-  window.addEventListener("resize", resizeRingsCanvas)
-}
-
-// ============================================================================
 // WINDOW RESIZE HANDLER
 // ============================================================================
 
