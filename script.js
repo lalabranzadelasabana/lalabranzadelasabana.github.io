@@ -341,10 +341,6 @@ const rotatingCircles = document.querySelectorAll(".rotating-circle")
 
 rotatingCircles.forEach((circle) => {
   circle.addEventListener("click", () => {
-    let currentRotation = Number.parseInt(circle.dataset.rotation) || 0
-    currentRotation += 90
-    circle.dataset.rotation = currentRotation
-    circle.style.transform = `rotate(${currentRotation}deg)`
 
     const deity = circle.dataset.deity
     if (deity === "sue") {
