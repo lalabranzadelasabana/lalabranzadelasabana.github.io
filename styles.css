@@ -7,15 +7,15 @@
 }
 
 @font-face {
-  font-family: "Pangolin";
-  src: url("./fonts/pangolin-regular.ttf") format("truetype");
+  font-family: "Black Grounds";
+  src: url("./fonts/Black-Grounds.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "RudyardRegular";
-  src: url("./fonts/RudyardRegular.ttf") format("truetype");
+  font-family: "Lofi-Cottage";
+  src: url("./fonts/Lofi-Cottage.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
@@ -45,8 +45,8 @@ body.chia-theme {
 }
 
 body {
-  /* Updated to use custom Pangolin font for body text */
-  font-family: "Pangolin", Georgia, "Times New Roman", serif;
+  /* Updated to use custom Lofi-Cottage font for body text */
+  font-family: "Lofi-Cottage", Georgia, "Times New Roman", serif;
   line-height: 1.6;
   overflow-x: hidden;
   transition: background 0.8s ease;
@@ -150,13 +150,42 @@ body.gradient-light-to-dark {
   opacity: 1;
 }
 
+/* Added styles for the back button */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.back-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.back-btn:hover {
+  transform: scale(1.1);
+}
+
 /* Controls */
 .controls {
   position: fixed;
   top: 20px;
   right: 20px;
   display: flex;
-  gap: 10px;
+  gap: 15px; /* Updated */
   z-index: 1000;
 }
 
@@ -165,22 +194,35 @@ body.gradient-light-to-dark {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid var(--accent-primary);
-  background: rgba(0, 0, 0, 0.7);
-  color: var(--accent-primary);
-  font-size: 24px;
+  border: none; /* Updated */
+  /* Updated background to transparent to let the image shine, or keep semi-transparent background if desired.
+     Given the images are circles, transparent might be best, or a subtle backing. */
+  background: rgba(255, 255, 255, 0.1); /* Updated */
+  backdrop-filter: blur(5px); /* Added */
+  color: #fff; /* Updated */
+  font-size: 1.2rem; /* Updated */
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0; /* Added */
+  overflow: hidden; /* Added */
+}
+
+/* Style for images inside control buttons */
+.control-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* or contain depending on the image border */
+  border-radius: 50%;
 }
 
 .control-btn:hover {
-  background: var(--accent-primary);
-  color: #000;
+  background: rgba(255, 255, 255, 0.2); /* Updated */
+  color: #000; /* Original color, but now hidden by image */
   transform: scale(1.1);
-  box-shadow: 0 0 20px var(--accent-primary);
+  box-shadow: 0 0 20px var(--accent-primary); /* Kept original box-shadow logic, though background changed */
 }
 
 .control-btn.active {
@@ -320,9 +362,8 @@ main {
 
 .intro-content {
   position: relative;
-		   
-			
-								   
+
+
   z-index: 2;
   text-align: center;
   width: 100%;
@@ -378,7 +419,7 @@ main {
 h2.section-title,
 .celestial-card h3,
 .bochica-text h2 {
-  font-family: "RudyardRegular", "Rimba Andalas", serif;
+  font-family: "Rimba Andalas", serif;
 }
 
 .narrative-text {
@@ -449,8 +490,10 @@ h2.section-title,
 }
 
 .subtitle {
-  font-size: 18px;
-  font-style: italic;
+  font-family: "Black Grounds", serif;
+  font-size: 26px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.6);
   color: var(--accent-secondary);
   text-align: center;
 }
@@ -741,12 +784,14 @@ h2.section-title,
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
-/* Birds section with left info-box layout */
+/* Updated birds section layout for centered condor initially */
 .birds-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 50px;
   align-items: start;
+  position: relative;
+  min-height: 500px;
 }
 
 .birds-image-container {
@@ -776,19 +821,42 @@ h2.section-title,
   pointer-events: all;
 }
 
-/* Center condor image and remove shadows */
+/* Condor image starts centered and animates to the right */
 .condor-img {
   width: 80%;
   max-width: 400px;
   height: auto;
-  margin: 0 auto;
   display: block;
   border-radius: 15px;
   filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.3));
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+}
+
+/* Animation class to move condor to the right */
+.condor-img.move-to-right {
+  position: relative;
+  left: 0;
+  top: 0;
+  transform: translate(0, 0);
+  margin: 0 auto;
+  z-index: 1;
 }
 
 #birdsInfoBtn {
   align-self: flex-start;
+  transform: translateX(-60px);
+  z-index: 20;
+  transition: transform 0.5s ease;
+}
+
+/* Class to return button to original position */
+#birdsInfoBtn.reset-position {
+  transform: translateX(0);
 }
 
 /* Generic info-box styling for all info boxes */
@@ -841,8 +909,8 @@ h2.section-title,
 }
 
 .celestial-card h3 {
-  /* Using RudyardRegular only for Sué and Chía titles */
-  font-family: "RudyardRegular", "Rimba Andalas", serif;
+  /* Using Black Grounds only for Sué and Chía titles */
+  font-family: "Black Grounds", "Rimba Andalas", serif;
   font-size: 32px;
   color: var(--accent-primary);
   margin: 20px 0;
@@ -914,7 +982,7 @@ h2.section-title,
   margin-top: 30px;
   text-align: center;
 }
-								  
+
 .bachue-content {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -1393,13 +1461,6 @@ footer p {
 }
 
 /* Intro video background para la sección 0 */
-.intro-section {
-  position: relative;
-  overflow: hidden;
-  padding: 0;
-  min-height: 100vh;
-}
-
 .intro-section video {
   position: absolute;
   top: 0;

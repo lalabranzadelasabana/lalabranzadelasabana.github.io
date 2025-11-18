@@ -140,12 +140,11 @@ if (canvas && ctx) {
 
 const menuBtn = document.getElementById("menuBtn")
 const musicToggle = document.getElementById("musicToggle")
-const soundToggle = document.getElementById("soundToggle")
 const infoPopup = document.getElementById("infoPopup")
 const closePopup = document.getElementById("closePopup")
+const musicIcon = document.getElementById("musicIcon")
 
 let musicEnabled = true
-let soundEnabled = true
 
 if (menuBtn) {
   menuBtn.addEventListener("click", () => {
@@ -163,6 +162,33 @@ if (infoPopup) {
   infoPopup.addEventListener("click", (e) => {
     if (e.target === infoPopup) {
       infoPopup.classList.add("hidden")
+    }
+  })
+}
+
+if (musicToggle) {
+  musicToggle.addEventListener("click", () => {
+    musicEnabled = !musicEnabled
+    
+    if (musicIcon) {
+      musicIcon.src = musicEnabled ? "./public/on.png" : "./public/off.png"
+    }
+
+    ambientAudios.forEach((audio) => {
+      if (musicEnabled) {
+        audio.play().catch((err) => console.log("[v0] Audio error:", err))
+      } else {
+        audio.pause()
+      }
+    })
+
+    if (videoAudio) {
+      if (musicEnabled) {
+        videoAudio.play().catch((err) => console.log("[v0] Audio error:", err))
+        videoAudio.volume = 0.5 
+      } else {
+        videoAudio.pause()
+      }
     }
   })
 }
@@ -203,54 +229,6 @@ function playRandomAmbient() {
     selectedAudio.play().catch((err) => console.log("[v0] Audio error:", err))
   }
 }
-
-if (musicToggle) {
-  musicToggle.addEventListener("click", () => {
-    musicEnabled = !musicEnabled
-    musicToggle.classList.toggle("active")
-
-    ambientAudios.forEach((audio) => {
-      if (musicEnabled) {
-        audio.play().catch((err) => console.log("[v0] Audio error:", err))
-      } else {
-        audio.pause()
-      }
-    })
-
-    if (videoAudio) {
-      if (musicEnabled) {
-        videoAudio.play().catch((err) => console.log("[v0] Audio error:", err))
-      } else {
-        videoAudio.pause()
-      }
-    }
-  })
-}
-
-if (soundToggle) {
-  soundToggle.addEventListener("click", () => {
-    soundEnabled = !soundEnabled
-    soundToggle.classList.toggle("active")
-
-    if (videoAudio) {
-      videoAudio.volume = soundEnabled ? 0.5 : 0
-    }
-  })
-}
-
-document.addEventListener(
-  "click",
-  () => {
-    if (!musicEnabled || !ambientAudios.length) return
-    const hasPlayed = ambientAudios.some((audio) => audio.played.length > 0)
-    if (!hasPlayed && ambientAudios[currentAmbientIndex]) {
-      ambientAudios[currentAmbientIndex]
-        .play()
-        .catch((err) => console.log("[v0] Audio error:", err))
-    }
-  },
-  { once: true },
-)
 
 ambientAudios.forEach((audio) => {
   audio.addEventListener("ended", () => {
@@ -386,19 +364,37 @@ if (earthInfoBtn) {
 
 const birdsInfoBtn = document.getElementById("birdsInfoBtn")
 const birdsInfo = document.getElementById("birdsInfo")
+const condorImage = document.getElementById("condorImage")
 
-if (birdsInfoBtn && birdsInfo) {
+if (birdsInfoBtn && birdsInfo && condorImage) {
   birdsInfoBtn.addEventListener("click", () => {
     birdsInfo.classList.toggle("visible")
+    
+    if (birdsInfo.classList.contains("visible")) {
+      condorImage.classList.add("move-to-right")
+      birdsInfoBtn.classList.add("reset-position")
+    } else {
+      condorImage.classList.remove("move-to-right")
+      birdsInfoBtn.classList.remove("reset-position")
+    }
   })
 }
 
 const bachueInfoBtn = document.getElementById("bachueInfoBtn")
 const bachueInfo = document.getElementById("bachueInfo")
+const bachueImage = document.getElementById("bachueImage")
 
-if (bachueInfoBtn && bachueInfo) {
+if (bachueInfoBtn && bachueInfo && bachueImage) {
   bachueInfoBtn.addEventListener("click", () => {
     bachueInfo.classList.toggle("visible")
+    
+    if (bachueInfo.classList.contains("visible")) {
+      bachueImage.classList.add("reset-position")
+      bachueInfoBtn.classList.add("reset-position")
+    } else {
+      bachueImage.classList.remove("reset-position")
+      bachueInfoBtn.classList.remove("reset-position")
+    }
   })
 }
 

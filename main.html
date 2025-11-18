@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cosmogonía Muisca - El Origen del Universo</title>
+    <!-- Added favicon -->
+    <link rel="icon" href="./public/favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
     <!-- Adding hidden audio elements for background ambient sounds -->
     <audio id="ambientAudio1" loop preload="auto">
@@ -16,6 +18,11 @@
 <body class="gradient-dark-to-light">
     <!-- Cursor Light Trails Canvas -->
     <canvas id="cursorTrails"></canvas>
+    
+    <!-- Added Back Button to top left -->
+    <a href="index.html" class="back-btn" title="Volver al inicio">
+        <img src="./public/atras.png" alt="Volver">
+    </a>
     
     <!-- Navigation Progress Bar -->
     <nav class="nav-progress">
@@ -36,14 +43,13 @@
     
     <!-- Control Buttons -->
     <div class="controls">
+        <!-- Updated menuBtn to use image icon -->
         <button id="menuBtn" class="control-btn" title="Información">
-            <span>ℹ️</span>
+            <img src="./public/informacion.png" alt="Información">
         </button>
-        <button id="musicToggle" class="control-btn active" title="Apagar música">
-            <span>🎵</span>
-        </button>
-        <button id="soundToggle" class="control-btn active" title="Apagar efectos de sonido">
-            <span>🔊</span>
+        <!-- Updated musicToggle to use image icon (on/off) and removed soundToggle -->
+        <button id="musicToggle" class="control-btn" title="Alternar música">
+            <img id="musicIcon" src="./public/on.png" alt="Música">
         </button>
     </div>
 
@@ -53,14 +59,9 @@
             <button id="closePopup" class="close-btn">✕</button>
             <h2>Información</h2>
             <div class="popup-body">
-                <h3>Controles Interactivos:</h3>
                 <ul>
-                    <li><strong>Cursor:</strong> Mueve el mouse para crear rastros de luz</li>
-                    <li><strong>Orbe 3D:</strong> Arrastra el orbe para interactuar (20+ veces revela el nombre)</li>
-                    <li><strong>Círculos de Sué y Chía:</strong> Haz clic en los círculos para cambiar el gradiente de la página</li>
-                    <li><strong>Botón "?":</strong> Revela información adicional</li>
-                    <li><strong>Audio:</strong> Haz clic en los botones de audio para iniciar narraciones</li>
-                    <li><strong>Sección del Diluvio:</strong> Mueve el cursor para crear ondas en el agua</li>
+                    Esta es una página web dedicada a todas las personas que les interese conocer una parte de la historia milenaria de la cultura Muysca. 
+                    Tiene la intención de difundir de manera digital sus virtudes, enseñanzas y esperanzas por mantener un legado que aun vive.
                 </ul>
                 <h3>Navegación:</h3>
                 <p>Desplázate hacia abajo para descubrir la historia completa de la cosmogonía muisca.</p>
@@ -78,7 +79,7 @@
                 Your browser does not support the video tag.
             </video>
             <div class="content-wrapper intro-content">
-                <h1 class="main-title">El regalo de los dioses</h1>
+                <h1 class="main-title">Un regalo divino</h1>
                 <p class="intro-text">
                     La cosmogonía muisca es el relato sagrado con el que este pueblo andino explicó cómo, desde una oscuridad absoluta, emergió la luz de Chiminigagua, 
                     volaron las aves negras que encendieron el cielo, nacieron el Sol Sue y la Luna Chía, surgió Bachué de la laguna de Iguaque para poblar la tierra y 
@@ -105,7 +106,7 @@
                 <!-- Centered all Chiminigagua section content with improved spacing -->
                 <div class="chiminigagua-centered">
                     <h2 class="section-title">Chiminigagua</h2>
-                    <p class="subtitle centered">La luz de la luz</p>
+                    <h3 class="subtitle centered">La luz de la luz</h3>
                     
                     <p class="narrative-text centered">
                         Antes de que existiera el mundo, según los cronistas, “no había nada… era siempre de noche y la luz estaba escondida” en una gran entidad llamada 
@@ -134,6 +135,7 @@
         <!-- Section 3: Black Birds -->
         <section class="section birds-section fade-in-scroll" data-section="2">
             <div class="content-wrapper birds-layout">
+                <!-- Modified layout to center condor initially -->
                 <div class="birds-image-container">
                     <button id="birdsInfoBtn" class="info-btn">?</button>
                     <!-- Added birdsInfo box with proper styling -->
@@ -151,8 +153,9 @@
                         </p>
                     </div>
                 </div>
-                <div class="birds-image fade-in-scroll">
-                    <img src="./public/condor.png" 
+                <!-- Condor image will be positioned via JavaScript -->
+                <div class="birds-image">
+                    <img id="condorImage" src="./public/condor.png" 
                          alt="Aves negras" class="condor-img">
                 </div>
             </div>
@@ -187,7 +190,7 @@
         <!-- Section 4: Sué and Chía -->
         <section class="section celestial-section fade-in-scroll" data-section="3">
             <div class="content-wrapper">
-                <h2 class="section-title">Los Ritmos del Cosmos</h2>
+                <h2 class="section-title">El ritmo del Cosmos</h2>
                 <div class="celestial-grid">
                     <div class="celestial-card">
                         <div class="rotating-circle" data-deity="sue">
@@ -246,11 +249,12 @@
         <section class="section bachue-section fade-in-scroll" data-section="4">
             <div class="content-wrapper">
                 <h2 class="section-title">Bachué</h2>
-                <p class="subtitle centered">La madre de todos los hombres</p>
+                <h3 class="subtitle centered">La madre de todos</h3>
                 
                 <div class="bachue-display-new">
                     <div class="bachue-image-large">
-                        <img src="./public/bachue.png" 
+                        <!-- Added ID to Bachué image for JS selection -->
+                        <img id="bachueImage" src="./public/bachue.png" 
                              alt="Bachué" class="portrait-img-large">
                     </div>
                     <div class="bachue-info-section">
@@ -435,7 +439,7 @@
             </svg>
         </div>
 
-        <!-- New Section: El Pacto -->
+		<!-- New Section: El Pacto -->
         <section class="section pacto-section" data-section="5">
             <canvas id="snakeCanvas"></canvas>
             <div class="pacto-content">
@@ -609,7 +613,6 @@
             </svg>
         </div>
 
-
         <!-- Section 6: The Flood (Full Screen with Water Effect) -->
         <section id="floodSection" class="section flood-section" data-section="6">
             <canvas id="waterCanvas"></canvas>
@@ -621,7 +624,7 @@
                         militares y valores. 
                     </p>
                     <p class="narrative-text large-text">
-                        La diosa inculcaba la paz, la convivencia y el respeto por las leyes por ello también era conocida como Furachoque (“mujer buena”).
+                        La diosa inculcaba la paz, la convivencia y el respeto por las leyes por ello también era conocida como Furachoque (“ mujer buena”).
                     </p>
                 </div>
             </div>
@@ -631,6 +634,7 @@
         <section class="section bochica-section fade-in-scroll" data-section="7">
             <div class="content-wrapper">
                 <h2 class="section-title">Bochica</h2>
+                <h3 class="subtitle centered">El civilizador</h3>
                 
                 <div class="bochica-display">
                     <div class="bochica-image-container">
