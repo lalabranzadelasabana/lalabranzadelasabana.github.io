@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cosmogonía Muisca - El Origen del Universo</title>
-    <!-- Added favicon -->
     <link rel="icon" href="./public/favicon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
-    <!-- Adding hidden audio elements for background ambient sounds -->
     <audio id="ambientAudio1" loop preload="auto">
         <source src="./audio/Ethereal Cinematic Ambience.mp3" type="audio/mpeg">
     </audio>
@@ -16,15 +14,12 @@
     </audio>
 </head>
 <body class="gradient-dark-to-light">
-    <!-- Cursor Light Trails Canvas -->
     <canvas id="cursorTrails"></canvas>
-    
-    <!-- Added Back Button to top left -->
     <a href="index.html" class="back-btn" title="Volver al inicio">
         <img src="./public/atras.png" alt="Volver">
     </a>
     
-    <!-- Navigation Progress Bar -->
+    <!-- Navigation Bar -->
     <nav class="nav-progress">
         <div class="nav-dots">
             <div class="nav-dot active" data-section="0" title="Introducción"></div>
@@ -41,19 +36,15 @@
         </div>
     </nav>
     
-    <!-- Control Buttons -->
     <div class="controls">
-        <!-- Updated menuBtn to use image icon -->
         <button id="menuBtn" class="control-btn" title="Información">
             <img src="./public/informacion.png" alt="Información">
         </button>
-        <!-- Updated musicToggle to use image icon (on/off) and removed soundToggle -->
         <button id="musicToggle" class="control-btn" title="Alternar música">
             <img id="musicIcon" src="./public/on.png" alt="Música">
         </button>
     </div>
 
-    <!-- Info Popup -->
     <div id="infoPopup" class="popup hidden">
         <div class="popup-content">
             <button id="closePopup" class="close-btn">✕</button>
@@ -68,12 +59,9 @@
             </div>
         </div>
     </div>
-
-    <!-- Main Content -->
     <main>
         <!-- Section 1: Darkness -->
         <section class="section intro-section fade-in-scroll" data-section="0">
-            <!-- Video as background, content wrapper positioned absolutely on top -->
             <video autoplay muted playsinline loop class="intro-video">
                 <source src="./video/Fondo.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -103,7 +91,6 @@
         <!-- Section 2: Chiminigagua -->
         <section class="section chiminigagua-section fade-in-scroll" data-section="1">
             <div class="content-wrapper">
-                <!-- Centered all Chiminigagua section content with improved spacing -->
                 <div class="chiminigagua-centered">
                     <h2 class="section-title">Chiminigagua</h2>
                     <h3 class="subtitle centered">La luz de la luz</h3>
@@ -117,8 +104,8 @@
                     <div class="orb-container orb-container-large">
                         <div class="image-carousel">
                             <img id="orbImage" src="./public/images/1.png" alt="Chiminigagua's sphere" class="carousel-image">
+                            <img id="click" src="./public/click.png" alt="Click sphere" class="infoclk-btn">
                         </div>
-                        <!-- Removed orbName element -->
                     </div>
 
                     <p class="narrative-text centered">
@@ -135,10 +122,8 @@
         <!-- Section 3: Black Birds -->
         <section class="section birds-section fade-in-scroll" data-section="2">
             <div class="content-wrapper birds-layout">
-                <!-- Modified layout to center condor initially -->
                 <div class="birds-image-container">
                     <button id="birdsInfoBtn" class="info-btn">?</button>
-                    <!-- Added birdsInfo box with proper styling -->
                     <div id="birdsInfo" class="info-box hidden">
                         <p class="small-text">
                             Las crónicas coloniales como la de fray Pedro Simón en el siglo XVI, narran que 
@@ -153,7 +138,6 @@
                         </p>
                     </div>
                 </div>
-                <!-- Condor image will be positioned via JavaScript -->
                 <div class="birds-image">
                     <img id="condorImage" src="./public/condor.png" 
                          alt="Aves negras" class="condor-img">
@@ -161,7 +145,7 @@
             </div>
         </section>
 
-        <!-- New Chiminigagua-section with two textboxes around earth image -->
+        <!-- Chiminigagua-section -->
         <section class="section chiminigagua-display-section fade-in-scroll" data-section="8">
             <div class="content-wrapper">
                 <div class="chiminigagua-grid earth-container">
@@ -252,14 +236,15 @@
                 <h3 class="subtitle centered">La madre de todos</h3>
                 
                 <div class="bachue-display-new">
-                    <div class="bachue-image-large">
-                        <!-- Added ID to Bachué image for JS selection -->
+                    <div id="bachueWrapper" class="bachue-image-large">
+																	   
                         <img id="bachueImage" src="./public/bachue.png" 
                              alt="Bachué" class="portrait-img-large">
+                        <button id="bachueInfoBtn" class="info-btn">?</button>
                     </div>
                     <div class="bachue-info-section">
-                        <button id="bachueInfoBtn" class="info-btn">?</button>
-                        <!-- Added bachueInfo box with proper styling and class -->
+																			  
+																		   
                         <div id="bachueInfo" class="info-box hidden">
                             <p class="small-text">
                                 Caminó por las orillas y enseñó a sus descendientes a vivir en comunidad, a sembrar, 
@@ -278,26 +263,19 @@
             </div>
         </section>
 
-        <!-- Added snake wave separator -->
         <div class="snake-separator">
             <svg class="snake-wave" viewBox="0 0 1500 150" preserveAspectRatio="none">
                 <defs>
                     <pattern id="snakeScales" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <!-- Dark base scale (antes #0d2818) -->
                         <ellipse cx="10" cy="10" rx="9" ry="6" fill="#06101f" />
-                        <!-- Medium scale (antes #1a4d2e) -->
                         <ellipse cx="10" cy="10" rx="7.5" ry="5" fill="#0b2f4f"/>
-                        <!-- Lighter scale (antes #2d7a4f) -->
                         <ellipse cx="10" cy="10" rx="6" ry="4" fill="#1b5fa8"/>
-                        <!-- Highlight (ya era azul, se mantiene) -->
                         <ellipse cx="9" cy="9" rx="3" ry="2" fill="#3872D9" opacity="0.9"/>
-                        <!-- Diamond shapes for texture variation (pasadas a azules) -->
                         <polygon points="10,5 12,10 10,15 8,10" fill="#0b2f4f" opacity="0.6"/>
                         <polygon points="10,6 11.5,10 10,14 8.5,10" fill="#1b5fa8" opacity="0.5"/>
                     </pattern>
                     
                     <pattern id="snakeParticles" x="0" y="0" width="100" height="50" patternUnits="userSpaceOnUse">
-                        <!-- Todo esto ya estaba en azules, lo dejo igual -->
                         <!-- Row 1 - Top -->
                         <circle cx="5" cy="8" r="1.5" fill="#3872D9" opacity="0.8">
                             <animateTransform attributeName="transform" type="translate" 
@@ -424,7 +402,6 @@
                     </pattern>
                     
                     <linearGradient id="snakeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <!-- Antes eran verdes, ahora gama azul marina -->
                         <stop offset="0%" style="stop-color:#06101f;stop-opacity:1" />
                         <stop offset="25%" style="stop-color:#0b2f4f;stop-opacity:1" />
                         <stop offset="50%" style="stop-color:#1d4ed8;stop-opacity:1" />
@@ -457,21 +434,15 @@
             <svg class="snake-wave" viewBox="0 0 1500 150" preserveAspectRatio="none">
                 <defs>
                     <pattern id="snakeScales" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <!-- Dark base scale (antes #0d2818) -->
                         <ellipse cx="10" cy="10" rx="9" ry="6" fill="#06101f" />
-                        <!-- Medium scale (antes #1a4d2e) -->
                         <ellipse cx="10" cy="10" rx="7.5" ry="5" fill="#0b2f4f"/>
-                        <!-- Lighter scale (antes #2d7a4f) -->
                         <ellipse cx="10" cy="10" rx="6" ry="4" fill="#1b5fa8"/>
-                        <!-- Highlight (ya era azul, se mantiene) -->
                         <ellipse cx="9" cy="9" rx="3" ry="2" fill="#3872D9" opacity="0.9"/>
-                        <!-- Diamond shapes for texture variation (pasadas a azules) -->
                         <polygon points="10,5 12,10 10,15 8,10" fill="#0b2f4f" opacity="0.6"/>
                         <polygon points="10,6 11.5,10 10,14 8.5,10" fill="#1b5fa8" opacity="0.5"/>
                     </pattern>
                     
                     <pattern id="snakeParticles" x="0" y="0" width="100" height="50" patternUnits="userSpaceOnUse">
-                        <!-- Todo esto ya estaba en azules, lo dejo igual -->
                         <!-- Row 1 - Top -->
                         <circle cx="5" cy="8" r="1.5" fill="#3872D9" opacity="0.8">
                             <animateTransform attributeName="transform" type="translate" 
@@ -598,7 +569,6 @@
                     </pattern>
                     
                     <linearGradient id="snakeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <!-- Antes eran verdes, ahora gama azul marina -->
                         <stop offset="0%" style="stop-color:#06101f;stop-opacity:1" />
                         <stop offset="25%" style="stop-color:#0b2f4f;stop-opacity:1" />
                         <stop offset="50%" style="stop-color:#1d4ed8;stop-opacity:1" />
@@ -641,7 +611,6 @@
                         <img src="./public/bochica.png" 
                              alt="Bochica" class="portrait-img-centered">
                         <button id="bochicaInfoBtn" class="info-btn">?</button>
-                        <!-- Added bochicaInfo box with proper styling and class -->
                         <div id="bochicaInfo" class="info-box hidden">
                             <p class="small-text">
                                 En medio de aquel caos, apareció Bochica, el sabio venido del oriente. 
@@ -664,7 +633,7 @@
                         misioneros lo interpretaron como un apóstol, aunque estudios actuales sugieren que esas barbas 
                         pudieron ser plumas y que el mito fue alterado por la mirada colonial. 
                     </p>
-                    <p class="small-text">
+                    <p class="narrative-text">
                         Pese a esas distorsiones, Bochica permanece como un semidiós protector que regula las aguas, 
                         funda rituales y salva a los muiscas de las catástrofes.
                     </p>
@@ -672,7 +641,7 @@
             </div>
         </section>
 
-        <!-- NEW SECTION: El Regalo -->
+        <!-- SECTION: El Regalo -->
         <section class="section regalo-section fade-in-scroll" data-section="8">
             <div class="content-wrapper">
                 <div class="regalo-content">

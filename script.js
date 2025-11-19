@@ -382,18 +382,16 @@ if (birdsInfoBtn && birdsInfo && condorImage) {
 
 const bachueInfoBtn = document.getElementById("bachueInfoBtn")
 const bachueInfo = document.getElementById("bachueInfo")
-const bachueImage = document.getElementById("bachueImage")
+const bachueWrapper = document.getElementById("bachueWrapper")
 
-if (bachueInfoBtn && bachueInfo && bachueImage) {
+if (bachueInfoBtn && bachueInfo && bachueWrapper) {
   bachueInfoBtn.addEventListener("click", () => {
     bachueInfo.classList.toggle("visible")
     
     if (bachueInfo.classList.contains("visible")) {
-      bachueImage.classList.add("reset-position")
-      bachueInfoBtn.classList.add("reset-position")
+      bachueWrapper.classList.add("move-left")
     } else {
-      bachueImage.classList.remove("reset-position")
-      bachueInfoBtn.classList.remove("reset-position")
+      bachueWrapper.classList.remove("move-left")
     }
   })
 }

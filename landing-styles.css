@@ -21,7 +21,7 @@ body {
 
 .landing-container {
   position: relative;
-  width: 100%;
+  width: 120%;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -58,17 +58,17 @@ body {
 
 .landing-title {
   font-family: "Rimba Andalas", serif;
-  font-size: 5rem;
+  font-size: 7rem;
   font-weight: 700;
-  color: #b9b9b9;
-  text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+  text-shadow: 2px 2px 8px #FEF4BC80;
   margin-bottom: 10px;
 }
 
 .landing-subtitle {
   font-family: "Pangolin", sans-serif;
   font-size: 1.3rem;
-  color: #919191;
+  color: #ffffff;
   line-height: 1.6;
   text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.7);
 }
@@ -88,24 +88,8 @@ body {
   font-family: "Pangolin", sans-serif;
   font-weight: bold;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
   cursor: pointer;
   border: none;
-}
-
-.iniciar-button:hover {
-  background-color: #ffd966;
-  transform: scale(1.05);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-}
-
-.iniciar-button:active {
-  transform: scale(0.98);
-}
-
-/* Added zoom-in animation for the Iniciar button */
-.iniciar-button.zooming {
-  animation: zoomInFace 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes zoomInFace {

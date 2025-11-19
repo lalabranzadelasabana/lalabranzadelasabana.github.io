@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cosmogonía Muisca - Inicio</title>
-    <!-- Added favicon -->
     <link rel="icon" href="./public/favicon.png" type="image/png">
     <link rel="stylesheet" href="landing-styles.css">
     <link rel="stylesheet" href="styles.css">
@@ -22,25 +21,19 @@
         <div class="landing-content">
             <h1 class="landing-title">Cosmogonía Muisca</h1>
             <p class="landing-subtitle">Un viaje por los mitos de origen del pueblo Muisca, desde la oscuridad primordial hasta la creación del mundo y sus dioses.</p>
-            
-            <!-- Changed from <a> to <button> to handle zoom animation -->
             <button id="iniciarBtn" class="iniciar-button">Iniciar</button>
         </div>
     </div>
 
-    <!-- Added script for zoom-in transition -->
     <script>
         const iniciarBtn = document.getElementById('iniciarBtn');
         
         if (iniciarBtn) {
             iniciarBtn.addEventListener('click', () => {
-                // Add zoom-in class to trigger animation
                 iniciarBtn.classList.add('zooming');
-                
-                // Wait for animation to complete before redirecting
                 setTimeout(() => {
                     window.location.href = 'main.html';
-                }, 800); // Match the animation duration
+                }, 800);
             });
         }
     </script>
